@@ -15,11 +15,13 @@ class Group(db.Model):
     group_members = db.relationship('GroupMember', back_populates='group', cascade='all, delete-orphan')
 
     def to_dict(self):
+        members = [member.user.username for member in self.group_members]
         return {
             'id': self.id,
             'group_name': self.group_name,
             'description': self.description,
-            'imageUrl': self.imageUrl
+            'imageUrl': self.imageUrl,
+            'members': members
         }
     
     

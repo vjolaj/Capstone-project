@@ -9,7 +9,7 @@ group_routes = Blueprint("groups", __name__)
 @group_routes.route('/current')
 def get_current_groups():
     """
-    This route will return a list of groups the current user is part of.
+    This route will return a list of groups (and associated members) the current user is part of.
     """
     current_user_groups = Group.query.join(Group.group_members).filter(GroupMember.user_id == current_user.id).all()
     return {"user_groups":{group.id: group.to_dict() for group in current_user_groups} }
