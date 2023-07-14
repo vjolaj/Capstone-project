@@ -11,7 +11,7 @@ class Expense(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("groups.id")), nullable=False)
     description = db.Column(db.String(255), nullable=False)
-    category = db.Column(db.String, nullable=False)
+    category = db.Column(db.String)
     created_at = db.Column(db.DateTime)
     imageUrl = db.Column(db.String(255))
     is_settled = db.Column(db.Boolean, nullable=False)

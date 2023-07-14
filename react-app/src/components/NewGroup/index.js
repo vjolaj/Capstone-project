@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import "./NewGroup.css";
 import { createGroupThunk, getAllGroupsThunk } from "../../store/groups";
+import { getAllUsersThunk } from "../../store/users";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function NewGroup() {
@@ -15,6 +16,15 @@ export default function NewGroup() {
     const dispatch = useDispatch();
     const history = useHistory();
     const [submitted, setSubmitted] = useState(false)
+    const [memberList, setMemberList] = useState([])
+    const [username, setUsername] = useState('')
+
+    const users = useSelector((state) => state.users.users);
+    console.log("USERS::::::", users)
+
+    useEffect(() => {
+        dispatch(getAllUsersThunk());
+      }, [dispatch]);
   
   
     useEffect(() => {
@@ -112,6 +122,13 @@ export default function NewGroup() {
   
               </div>
             </div>
+            {/* <div>
+              Select members of your team:
+              <input
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+              ></input>
+            </div> */}
             <button type="submit" className="submit-form-button">
               Add your Group
             </button>

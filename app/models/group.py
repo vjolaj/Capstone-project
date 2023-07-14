@@ -10,9 +10,11 @@ class Group(db.Model):
     group_name = db.Column(db.String(255), nullable=False, unique=True)
     description = db.Column(db.String(255), nullable=False)
     imageUrl = db.Column(db.String(255), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False )
     
     expenses = db.relationship('Expense', back_populates='group')
     group_members = db.relationship('GroupMember', back_populates='group', cascade='all, delete-orphan')
+    group_creator = db.relationship('User', back_populates='groups')
 
     def to_dict(self):
         members = [member.user.username for member in self.group_members]
