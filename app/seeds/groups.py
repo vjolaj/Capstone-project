@@ -7,13 +7,15 @@ def seed_groups():
     group1 = Group(
         group_name='Paris Trip', 
         description='July 05-12 Paris trip!',
-        imageUrl='https://images.adsttc.com/media/images/5d44/14fa/284d/d1fd/3a00/003d/large_jpg/eiffel-tower-in-paris-151-medium.jpg?1564742900'
+        imageUrl='https://images.adsttc.com/media/images/5d44/14fa/284d/d1fd/3a00/003d/large_jpg/eiffel-tower-in-paris-151-medium.jpg?1564742900',
+        creator_id=1,
         )
     
     group2 = Group(
         group_name='58 Main Street', 
         description='Apt 28 residents, post any relevant bills here!', 
-        imageUrl='https://media.istockphoto.com/id/486644087/photo/apartment-building.jpg?s=612x612&w=0&k=20&c=jFP_iJEQYphmb4BWP6KfFUNBdZaGUOe1N5xOo3icFQw='
+        imageUrl='https://media.istockphoto.com/id/486644087/photo/apartment-building.jpg?s=612x612&w=0&k=20&c=jFP_iJEQYphmb4BWP6KfFUNBdZaGUOe1N5xOo3icFQw=',
+        creator_id=1
     )
 
     db.session.add(group1)

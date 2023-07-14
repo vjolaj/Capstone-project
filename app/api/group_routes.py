@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
 from app.models import Group, db, User, GroupMember
-from app.forms import GroupForm
+from app.forms import GroupForm, MembersForm
 from .auth_routes import validation_errors_to_error_messages
 from .AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
 
@@ -28,15 +28,15 @@ def create_group():
         return {'error': 'unauthorized access'}
     
     if form.validate_on_submit():
-        # image = form.data["imageUrl"]
-        # image.filename = get_unique_filename(image.filename)
-        # upload = upload_file_to_s3(image)
+        image = form.data["imageUrl"]
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
 
         new_group = Group (
             group_name = form.data['group_name'],
             description = form.data['description'],
-            # imageUrl = upload['url'],
-            imageUrl = form.data['imageUrl'],
+            imageUrl = upload['url'],
+            # imageUrl = form.data['imageUrl'],
             creator_id = current_user.id
         )
         
@@ -46,33 +46,50 @@ def create_group():
         return {"new_group": new_group.to_dict()}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
         
-@group_routes.route('/members', methods=['POST'])
-def add_members(groupId, usernames):
+@group_routes.route('/<int:groupId>/members', methods=['POST'])
+def add_members(groupId):
     group = Group.query.get(groupId)
     
     if current_user.id is not group.creator_id:
         return {'error': 'unathorized access'}, 403
-    for username in usernames:
-        user = User.query.filter_by(User.username==username).first()
+    form = MembersForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    
+    if not current_user.is_authenticated:
+        return {'error': 'unauthorized access'}
+    
+    if form.validate_on_submit():
+        username =  form.data['username']
+        user = User.query.filter_by(username=username).first()
         if user is None:
             return {"error": "user does not exist"}, 404
         db.session.add(GroupMember(user=user, group=group))
         db.session.commit()
         return {"group": group.to_dict()}
 
-@group_routes.route('/members', methods=['DELETE'])
-def remove_members(groupId, usernames):
+@group_routes.route('/<int:groupId>/members', methods=['DELETE'])
+def remove_members(groupId):
     group = Group.query.get(groupId)
+    form = MembersForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
     
     if current_user.id is not group.creator_id:
         return {'error': 'unathorized access'}, 403
-    for username in usernames:
-        user = User.query.filter_by(User.username==username).first()
+    if form.validate_on_submit():
+        username = form.data['username']
+        user = User.query.filter_by(username=username).first()
+        
         if user is None:
-            return {"error": "user does not exist"}, 404
-        db.session.delete(user)
+            return {"error": "User does not exist"}, 404
+        
+        groupmember = GroupMember.query.filter_by(user=user, group=group).first()
+        
+        if groupmember is None:
+            return {"error": "Group member does not exist"}, 404
+
+        db.session.delete(groupmember)
         db.session.commit()
-        return {'message': 'Users successfully deleted'}, 200
+        return {'message': 'Group member successfully deleted'}, 200
 
 @group_routes.route("/<int:groupId>/update", methods=['PUT'])
 def update_group(groupId):
@@ -95,6 +112,7 @@ def delete_group(groupId):
         return {'error': 'unathorized access'}, 403
     db.session.delete(group_to_delete)
     return {'message': 'group successfully deleted'}, 200
+
 
 
     

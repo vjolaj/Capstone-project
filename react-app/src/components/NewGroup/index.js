@@ -16,11 +16,7 @@ export default function NewGroup() {
     const dispatch = useDispatch();
     const history = useHistory();
     const [submitted, setSubmitted] = useState(false)
-    const [memberList, setMemberList] = useState([])
-    const [username, setUsername] = useState('')
 
-    const users = useSelector((state) => state.users.users);
-    console.log("USERS::::::", users)
 
     useEffect(() => {
         dispatch(getAllUsersThunk());
@@ -123,7 +119,7 @@ export default function NewGroup() {
               </div>
             </div>
             {/* <div>
-              Select members of your team:
+              Add a member to your group:
               <input
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}

@@ -14,7 +14,7 @@ class Group(db.Model):
     
     expenses = db.relationship('Expense', back_populates='group')
     group_members = db.relationship('GroupMember', back_populates='group', cascade='all, delete-orphan')
-    group_creator = db.relationship('User', back_populates='groups')
+    creator = db.relationship('User', back_populates='created_groups')
 
     def to_dict(self):
         members = [member.user.username for member in self.group_members]

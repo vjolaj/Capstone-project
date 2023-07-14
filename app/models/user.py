@@ -22,7 +22,7 @@ class User(db.Model, UserMixin):
     budgets = db.relationship('Budget', back_populates='user')
     payments_sent = db.relationship('Payment', back_populates='payer', foreign_keys='Payment.payer_id')
     payments_received = db.relationship('Payment', back_populates='payee', foreign_keys='Payment.payee_id')
-    groups = db.relationship('Group', back_populates='users')
+    created_groups = db.relationship('Group', back_populates='creator')
 
     @property
     def password(self):
