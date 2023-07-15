@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import "./GroupShow.css";
-import { createGroupThunk, getAllGroupsThunk } from "../../store/groups";
+import { createGroupThunk, getAllGroupsThunk, readSingleGroupThunk } from "../../store/groups";
 import { getAllUsersThunk } from "../../store/users";
 import OpenModalButton from "../OpenModalButton";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
@@ -18,6 +18,7 @@ const GroupShow = () => {
     
       useEffect(() => {
         dispatch(getAllGroupsThunk());
+        // dispatch(readSingleGroupThunk(groupId))
       }, []);
 
       const users = useSelector(

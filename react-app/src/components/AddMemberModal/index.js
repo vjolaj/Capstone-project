@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useModal } from "../../context/Modal";
-import { addGroupMemberThunk } from "../../store/groups";
+import { addGroupMemberThunk, getAllGroupsThunk,  readSingleGroupThunk } from "../../store/groups";
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
+
 
 function AddMemberModal({ group, users }) {
   const { closeModal } = useModal();
@@ -24,6 +25,7 @@ function AddMemberModal({ group, users }) {
     dispatch(addGroupMemberThunk(group.id, userName))
     .then(() => {
         closeModal();
+        dispatch(getAllGroupsThunk());
         history.push(`/groups/${group.id}`)
     })
   };

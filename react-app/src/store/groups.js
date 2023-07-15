@@ -72,10 +72,12 @@ export const addGroupMemberThunk = (groupId, username) => async (dispatch) => {
     return data;
   };
   
-  export const readSingleGroupThunk = (group) => async (dispatch) => {
-    dispatch(readSingleGroupAction(group));
+  export const readSingleGroupThunk = (groupId) => async (dispatch) => {
+    const res = await fetch(`/api/groups/${groupId}`);
+    const data = await res.json();
+    dispatch(readSingleGroupAction(groupId));
   
-    return group;
+    return data;
   
   };
 

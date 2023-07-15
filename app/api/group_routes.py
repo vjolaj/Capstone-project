@@ -105,6 +105,9 @@ def update_group(groupId):
 
 @group_routes.route("/<int:groupId>/delete", methods=['DELETE'])
 def delete_group(groupId):
+    """
+    This route will delete a group.
+    """
     group_to_delete = Group.query.get(groupId)
     
     if current_user.id is not group_to_delete.creator_id:
@@ -113,6 +116,12 @@ def delete_group(groupId):
     return {'message': 'group successfully deleted'}, 200
 
 
-
+@group_routes.route("/<int:groupId>")
+def get_single_group(groupId):
+    """
+    This route will return a a single group (and associated members).
+    """
+    group = Group.query.join(Group.group_members).filter(Group.id == groupId).first()
+    return {"group": group.to_dict()}
     
     
