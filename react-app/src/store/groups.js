@@ -2,6 +2,8 @@
 const GET_ALL_GROUPS = "/groups/GET/all";
 const GET_SINGLE_GROUP = "/groups/GET/single";
 const DELETE_SINGLE_GROUP = "/groups/DELETE/single";
+const ADD_GROUP_MEMBER = "/group/members";
+
 
 //action creators
 const readAllGroupsAction = (groups) => {
@@ -24,6 +26,37 @@ const readAllGroupsAction = (groups) => {
       group,
     };
   };
+
+  export const addGroupMember = (groupMember) => {
+    return {
+        type: ADD_GROUP_MEMBER,
+        groupMember,
+    }    
+}
+
+export const addGroupMemberThunk = (groupId, username) => async (dispatch) => {
+    try {
+        const res = await fetch(`/api/groups/${groupId}/members`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username
+        })
+        });
+    
+        if (res.ok) {
+          const { group } = await res.json();
+          dispatch(addGroupMember(group));
+        } else {
+          const errorMessage = await res.text();
+          throw new Error(errorMessage);
+        }
+      } catch (error) {
+      }
+};
+
 
   export const getAllGroupsThunk = () => async (dispatch) => {
     const res = await fetch("/api/groups/current");
@@ -67,6 +100,7 @@ const readAllGroupsAction = (groups) => {
 const initialState = {
     singleGroup: {},
     allGroups: [],
+    groupMembers: {}
   };
   
   const groupsReducer = (state = initialState, action) => {
@@ -76,6 +110,11 @@ const initialState = {
           ...state,
           allGroups: action.groups,
         };
+            case ADD_GROUP_MEMBER:
+        return {
+            ...state,
+            groupMembers: action.groupMembers,
+          };
       case GET_SINGLE_GROUP:
         return {
           ...state,

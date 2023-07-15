@@ -7,7 +7,7 @@ import { getAllGroupsThunk } from "../../store/groups";
 const Dashboard = () => {
     const dispatch = useDispatch();
     const groups = useSelector((state) => state.groups.allGroups);
-    console.log("COMPONENT", groups)
+    // console.log("COMPONENT", groups)
 
     useEffect(() => {
         dispatch(getAllGroupsThunk());

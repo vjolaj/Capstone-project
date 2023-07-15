@@ -15,7 +15,6 @@ def get_current_groups():
     current_user_groups = Group.query.join(Group.group_members).filter(GroupMember.user_id == current_user.id).all()
     return {"user_groups":{group.id: group.to_dict() for group in current_user_groups} }
 
-
 @group_routes.route('/new', methods=['POST'])
 def create_group():
     """

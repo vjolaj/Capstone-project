@@ -17,10 +17,13 @@ export default function NewGroup() {
     const history = useHistory();
     const [submitted, setSubmitted] = useState(false)
 
-
-    useEffect(() => {
-        dispatch(getAllUsersThunk());
-      }, [dispatch]);
+  //   const users = useSelector(
+  //     (state) => state.users.users
+  //   )
+  // // console.log(users)
+  //   useEffect(() => {
+  //       dispatch(getAllUsersThunk());
+  //     }, [dispatch]);
   
   
     useEffect(() => {
@@ -60,11 +63,12 @@ export default function NewGroup() {
         return null
     }
     setValidationErrors({})
-      return dispatch(createGroupThunk(formData))
-      .then(() => {
-        dispatch(getAllGroupsThunk());
-        history.push(`/dashboard`);
-      });
+      const newGroup = await dispatch(createGroupThunk(formData))
+      newGroup && history.push(`/groups/${newGroup.id}`)
+      // .then(() => {
+      //   dispatch(getAllGroupsThunk());
+      //   history.push(`/dashboard`);
+      // });
     };
   
     return (
