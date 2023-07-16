@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+from app.api.expense_logic import get_consolidated_balances
 from flask_login import current_user, login_required
 from app.models import Group, db, User, GroupMember
 from app.forms import GroupForm, MembersForm
@@ -8,6 +9,7 @@ from .AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_fro
 group_routes = Blueprint("groups", __name__)
 
 @group_routes.route('/current')
+@login_required
 def get_current_groups():
     """
     This route will return a list of groups (and associated members) the current user is part of.
@@ -16,6 +18,7 @@ def get_current_groups():
     return {"user_groups":{group.id: group.to_dict() for group in current_user_groups} }
 
 @group_routes.route('/new', methods=['POST'])
+@login_required
 def create_group():
     """
     This route will create a new group and allow the logged in user to add members to it.
@@ -46,6 +49,7 @@ def create_group():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
         
 @group_routes.route('/<int:groupId>/members', methods=['POST'])
+@login_required
 def add_members(groupId):
     """
     This route will add a group member to a group.
@@ -73,6 +77,7 @@ def add_members(groupId):
         return {"group": group.to_dict()}
 
 @group_routes.route('/<int:groupId>/members', methods=['DELETE'])
+@login_required
 def remove_members(groupId):
     """
     This route will remove a group member from its group.
@@ -100,6 +105,7 @@ def remove_members(groupId):
         return {'message': 'Group member successfully deleted'}, 200
 
 @group_routes.route("/<int:groupId>/update", methods=['PUT'])
+@login_required
 def update_group(groupId):
     """
     This route will update a group, specifically it's description.
@@ -116,6 +122,7 @@ def update_group(groupId):
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 @group_routes.route("/<int:groupId>/delete", methods=['DELETE'])
+@login_required
 def delete_group(groupId):
     """
     This route will delete a group.
@@ -129,7 +136,8 @@ def delete_group(groupId):
 
 
 @group_routes.route("/<int:groupId>")
-def get_single_group(groupId):
+@login_required
+def get_single_group_details(groupId):
     """
     This route will return a a single group (and associated members).
     """
@@ -137,3 +145,8 @@ def get_single_group(groupId):
     return {"group": group.to_dict()}
     
     
+@group_routes.route("/<int:groupId>/balances")
+@login_required
+def get_single_group_balances(groupId):
+    per_member_balances = get_consolidated_balances(groupId)
+    return {"balances": per_member_balances}
