@@ -47,6 +47,9 @@ def create_group():
         
 @group_routes.route('/<int:groupId>/members', methods=['POST'])
 def add_members(groupId):
+    """
+    This route will add a group member to a group.
+    """
     group = Group.query.get(groupId)
         
     if current_user.id is not group.creator_id:
@@ -71,6 +74,9 @@ def add_members(groupId):
 
 @group_routes.route('/<int:groupId>/members', methods=['DELETE'])
 def remove_members(groupId):
+    """
+    This route will remove a group member from its group.
+    """
     group = Group.query.get(groupId)
     form = MembersForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -95,6 +101,9 @@ def remove_members(groupId):
 
 @group_routes.route("/<int:groupId>/update", methods=['PUT'])
 def update_group(groupId):
+    """
+    This route will update a group, specifically it's description.
+    """
     group_to_update = Group.query.get(groupId)
 
     form = GroupForm()
