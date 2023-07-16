@@ -64,11 +64,8 @@ export default function NewGroup() {
     }
     setValidationErrors({})
       const newGroup = await dispatch(createGroupThunk(formData))
-      newGroup && history.push(`/groups/${newGroup.id}`)
-      // .then(() => {
-      //   dispatch(getAllGroupsThunk());
-      //   history.push(`/dashboard`);
-      // });
+      // dispatch(getAllGroupsThunk());
+      history.push(`/dashboard`)
     };
   
     return (

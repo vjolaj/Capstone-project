@@ -48,7 +48,7 @@ def create_group():
 @group_routes.route('/<int:groupId>/members', methods=['POST'])
 def add_members(groupId):
     group = Group.query.get(groupId)
-    
+        
     if current_user.id is not group.creator_id:
         return {'error': 'unathorized access'}, 403
     form = MembersForm()
@@ -60,6 +60,9 @@ def add_members(groupId):
     if form.validate_on_submit():
         username =  form.data['username']
         user = User.query.filter_by(username=username).first()
+        groupmember = GroupMember.query.filter_by(user=user, group=group).first()
+        if groupmember:
+            return {"error": "user already added to this group"}
         if user is None:
             return {"error": "user does not exist"}, 404
         db.session.add(GroupMember(user=user, group=group))
@@ -109,10 +112,10 @@ def delete_group(groupId):
     This route will delete a group.
     """
     group_to_delete = Group.query.get(groupId)
-    
-    if current_user.id is not group_to_delete.creator_id:
+    if current_user.id != group_to_delete.creator_id:
         return {'error': 'unathorized access'}, 403
     db.session.delete(group_to_delete)
+    db.session.commit()
     return {'message': 'group successfully deleted'}, 200
 
 
