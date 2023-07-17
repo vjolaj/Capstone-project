@@ -157,14 +157,14 @@ def get_single_group_balances(groupId):
     return {"balances": per_member_balances}
 
 
-@group_routes.route("/<int:groupId>/settlement-page")
-@login_required
-def get_settlement_for_user(groupId):
-    """
-    This route gives the current user his different settlements needed
-    Returns None if no settlements needed
-    """
-    user_settlements = SettlementTransaction.query.filter_by(payer_id=current_user.id).filter_by(group_id=groupId).filter_by(is_settled=False).all()
-    # if user_settlements is None:
-    #     return {}
-    return {"settlements":{user_settlement.payee_id: user_settlement.amount for user_settlement in user_settlements}}
+# @group_routes.route("/<int:groupId>/settlement-page")
+# @login_required
+# def get_settlement_for_user(groupId):
+#     """
+#     This route gives the current user his different settlements needed
+#     Returns None if no settlements needed
+#     """
+#     user_settlements = SettlementTransaction.query.filter_by(payer_id=current_user.id).filter_by(group_id=groupId).filter_by(is_settled=False).all()
+#     # if user_settlements is None:
+#     #     return {}
+#     return {"settlements":{user_settlement.payee_id: user_settlement.amount for user_settlement in user_settlements}}

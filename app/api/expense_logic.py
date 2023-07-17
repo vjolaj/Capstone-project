@@ -5,7 +5,13 @@ from app.models.groupmember import GroupMember
 from app.models.settlement_transaction import SettlementTransaction
 from app.models import db
 
-def get_consolidated_balances(group_id):
+######## HELPERS #########
+
+def get_amounts_expended_per_member(group_id):
+    """
+    Returns a dictionary of {'user_id': amount_expended}
+    Only adds up expenses, does not consider any settlements
+    """
     expenses = Expense.query.filter_by(group_id=group_id)
     amounts_expended_per_member = defaultdict(int)
     # loop over expenses, sum up total amount paid per user
@@ -13,20 +19,7 @@ def get_consolidated_balances(group_id):
         payer = expense.creator_id
         amount = expense.amount
         amounts_expended_per_member[payer] += amount
-    
-    total_amount_spent_in_group = sum(amounts_expended_per_member.values())
-    group_members = [member.user_id for member in GroupMember.query.filter_by(group_id = group_id).all()]
-    number_of_group_members =  len(group_members)
-    amount_owed_per_member = total_amount_spent_in_group/number_of_group_members
-    
-    amounts_outstanding = {}
-    for member in group_members:
-        amount_paid_by_member = amounts_expended_per_member.get(member, 0)
-        # amount_paid_by_member += all_settled_payments_from_member_in_group()
-        amount_outstanding = amount_paid_by_member - amount_owed_per_member # negative values means they owe money
-        amounts_outstanding[member] = amount_outstanding
-    
-    return amounts_outstanding
+    return amounts_expended_per_member
 
 def any_balance_nonzero(consolidated_balances):
     """
@@ -36,6 +29,47 @@ def any_balance_nonzero(consolidated_balances):
         if consolidated_balances[member] != 0:
             return True
     return False
+
+def get_settled_amount_for_member(group_id, user_id, is_payer):
+    """
+    For a given member in a group, gets how much they paid/received in settlements
+    """
+    if is_payer:
+        settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).filter_by(is_settled=True).all()
+    else:
+        settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payee_id=user_id).filter_by(is_settled=True).all()
+    return sum([settlement.amount for settlement in settlements])
+
+
+
+######## MAIN LOGIC #########
+
+def get_consolidated_balances(group_id):
+    """
+    Returns dictionary of {'user_id': balance} where balance is negative if they owe any money
+    This is after all group expenses and any settlements
+    """
+    # Get the average expenses per member (total spent on expenses / number of members)
+    amounts_expended_per_member = get_amounts_expended_per_member(group_id)
+    total_amount_spent_in_group = sum(amounts_expended_per_member.values())
+    group_members = [member.user_id for member in GroupMember.query.filter_by(group_id = group_id).all()]
+    number_of_group_members =  len(group_members)
+    amount_owed_per_member_for_expenses = total_amount_spent_in_group/number_of_group_members
+    
+    # now calculate the difference between total spent per member and average expenses
+    # also take into account the settlements in the group
+    amounts_outstanding = {}
+    for member in group_members:
+        amount_expended_by_member = amounts_expended_per_member.get(member, 0)
+        settlements_received_by_member = get_settled_amount_for_member(group_id, member, is_payer=False)
+        settlements_paid_by_member = get_settled_amount_for_member(group_id, member, is_payer=True)
+        
+        amount_outstanding = amount_expended_by_member + settlements_paid_by_member - amount_owed_per_member_for_expenses - settlements_received_by_member
+        amounts_outstanding[member] = amount_outstanding
+    
+    return amounts_outstanding
+
+
 
 
 def update_settlement_transactions(group_id):
