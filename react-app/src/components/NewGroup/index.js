@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./NewGroup.css";
-import { createGroupThunk, getAllGroupsThunk } from "../../store/groups";
-import { getAllUsersThunk } from "../../store/users";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { createGroupThunk } from "../../store/groups";
+
 
 export default function NewGroup() {
     const sessionUser = useSelector((state) => state.session.user);
@@ -119,13 +118,6 @@ export default function NewGroup() {
   
               </div>
             </div>
-            {/* <div>
-              Add a member to your group:
-              <input
-                value={userSearch}
-                onChange={(e) => setUserSearch(e.target.value)}
-              ></input>
-            </div> */}
             <button type="submit" className="submit-form-button">
               Add your Group
             </button>

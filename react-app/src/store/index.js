@@ -3,12 +3,13 @@ import thunk from 'redux-thunk';
 import session from './session'
 import groupsReducer from './groups';
 import usersReducer from './users';
+import expensesReducer from './expenses';
 
 const rootReducer = combineReducers({
   session,
   groups: groupsReducer,
-  users: usersReducer
-
+  users: usersReducer,
+  expenses: expensesReducer
 });
 
 

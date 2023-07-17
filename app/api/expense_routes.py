@@ -3,7 +3,7 @@ from collections import defaultdict
 from flask import Blueprint, request
 from app.api.expense_logic import update_settlement_transactions
 from flask_login import current_user, login_required
-from app.models import Group, db, User, GroupMember, Expense
+from app.models import  db, GroupMember, Expense
 from app.forms import ExpenseForm
 from .auth_routes import validation_errors_to_error_messages
 from .AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
@@ -39,9 +39,9 @@ def create_new_expense(groupId):
         return {'error': 'Must be member of group to post a new expense.'}
     
     if form.validate_on_submit():
-        # image = form.data["imageUrl"]
-        # image.filename = get_unique_filename(image.filename)
-        # upload = upload_file_to_s3(image)
+        image = form.data["imageUrl"]
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
         
         new_expense = Expense (
             amount =  form.data['amount'],
@@ -49,8 +49,8 @@ def create_new_expense(groupId):
             group_id = groupId,
             description = form.data['description'],
             category = form.data['category'],
-            # imageUrl= upload['url'],
-            imageUrl = form.data['imageUrl'],
+            imageUrl= upload['url'],
+            # imageUrl = form.data['imageUrl'],
             created_at = db.func.now(),
         )
         db.session.add(new_expense)

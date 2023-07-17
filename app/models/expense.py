@@ -24,6 +24,7 @@ class Expense(db.Model):
             'id': self.id,
             'amount': self.amount,
             'creator_id': self.creator_id,
+            "creator_name": self.creator.username,
             'group_id': self.group_id,
             'description': self.description,
             'category': self.category,

@@ -8,18 +8,22 @@ import {
   readSingleGroupThunk,
   editGroupThunk
 } from "../../store/groups";
+import { getAllGroupExpensesRoutes } from "../../store/expenses"
 import { getAllUsersThunk } from "../../store/users";
 import OpenModalButton from "../OpenModalButton";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import AddMemberModal from "../AddMemberModal";
 import DeleteMemberModal from "../DeleteMemberModal";
 import DeleteGroupModal from "../DeleteGroupModal";
+import AddExpenseModal from "../AddExpenseModal";
 
 const GroupShow = () => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const group = useSelector((state) => state.groups.allGroups[groupId]);
+  const groupExpenses = useSelector((state) => state.expenses.groupExpenses)
+  // console.log(groupExpenses)
   // const group = useSelector((state) => state.groups.singleGroup)
   const [description, setDescription] = useState("");
   const history = useHistory();
@@ -34,6 +38,7 @@ const GroupShow = () => {
   useEffect(() => {
     dispatch(getAllGroupsThunk());
     dispatch(readSingleGroupThunk(groupId))
+    dispatch(getAllGroupExpensesRoutes(groupId))
   }, [dispatch, groupId]);
 
   const users = useSelector((state) => state.users.users);
@@ -57,7 +62,6 @@ const GroupShow = () => {
   return (
     <div>
       <div>
-        
         Group:
         <div>
           <img className = "groupImage" src={group.imageUrl} alt="img" />
@@ -84,6 +88,22 @@ const GroupShow = () => {
               Edit description
             </button>
           )}
+          <div>
+            Group Expenses:
+            {Object.values(groupExpenses).map((expense) => (
+              <div key={expense.id}>
+                <div>Expense Category: {expense.category}</div>
+                <div>Expense description: {expense.description}</div>
+                <div>{expense.creator_name} posted a ${expense.amount} expense on {expense.created_at}</div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <OpenModalButton
+              buttonText="Add an Expense"
+              modalComponent={<AddExpenseModal group={group} />}
+            />
+          </div>
           <div>
             Group members:
             {group.members.map((member) => (

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useModal } from "../../context/Modal";
-import { addGroupMemberThunk, getAllGroupsThunk,  readSingleGroupThunk } from "../../store/groups";
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { addGroupMemberThunk, getAllGroupsThunk } from "../../store/groups";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 
 function AddMemberModal({ group, users }) {
