@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: fadf715151ea
+Revision ID: 4652ced55680
 Revises: 
-Create Date: 2023-07-14 08:17:05.453490
+Create Date: 2023-07-16 16:11:22.299623
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fadf715151ea'
+revision = '4652ced55680'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -54,7 +54,7 @@ def upgrade():
     sa.Column('creator_id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=255), nullable=False),
-    sa.Column('category', sa.String(), nullable=True),
+    sa.Column('category', sa.String(), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('imageUrl', sa.String(length=255), nullable=True),
     sa.Column('is_settled', sa.Boolean(), nullable=False),
@@ -83,13 +83,13 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('payer_id', sa.Integer(), nullable=False),
     sa.Column('payee_id', sa.Integer(), nullable=False),
-    sa.Column('expense_id', sa.Integer(), nullable=False),
+    sa.Column('settlement_transaction_id', sa.Integer(), nullable=False),
     sa.Column('amount', sa.Numeric(precision=4, scale=2), nullable=False),
     sa.Column('method_of_payment', sa.String(length=255), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['expense_id'], ['expenses.id'], ),
     sa.ForeignKeyConstraint(['payee_id'], ['users.id'], ),
     sa.ForeignKeyConstraint(['payer_id'], ['users.id'], ),
+    sa.ForeignKeyConstraint(['settlement_transaction_id'], ['expenses.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

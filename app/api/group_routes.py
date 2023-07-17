@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from app.api.expense_logic import get_consolidated_balances
+from app.api.expense_logic import get_consolidated_balances, get_settlement_transactions
 from flask_login import current_user, login_required
 from app.models import Group, db, User, GroupMember
 from app.forms import GroupForm, MembersForm
@@ -56,7 +56,7 @@ def add_members(groupId):
     """
     group = Group.query.get(groupId)
         
-    if current_user.id is not group.creator_id:
+    if current_user.id != group.creator_id:
         return {'error': 'unathorized access'}, 403
     form = MembersForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -86,7 +86,7 @@ def remove_members(groupId):
     form = MembersForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     
-    if current_user.id is not group.creator_id:
+    if current_user.id != group.creator_id:
         return {'error': 'unathorized access'}, 403
     if form.validate_on_submit():
         username = form.data['username']
@@ -114,12 +114,13 @@ def update_group(groupId):
 
     form = GroupForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    form['group_name'].data = group_to_update.group_name
     
     if form.validate_on_submit():
         group_to_update.description = form.data['description']
         db.session.commit()
         return {"updated group": group_to_update.to_dict()}
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+    return {'errors': validation_errors_to_error_messages(form.errors)}
 
 @group_routes.route("/<int:groupId>/delete", methods=['DELETE'])
 @login_required
@@ -139,7 +140,7 @@ def delete_group(groupId):
 @login_required
 def get_single_group_details(groupId):
     """
-    This route will return a a single group (and associated members).
+    This route will return a single group (and associated members).
     """
     group = Group.query.join(Group.group_members).filter(Group.id == groupId).first()
     return {"group": group.to_dict()}
@@ -148,5 +149,19 @@ def get_single_group_details(groupId):
 @group_routes.route("/<int:groupId>/balances")
 @login_required
 def get_single_group_balances(groupId):
+    """
+    This route will return the balances of each user within a group.
+    """
     per_member_balances = get_consolidated_balances(groupId)
     return {"balances": per_member_balances}
+
+
+@group_routes.route("/<int:groupId>/settle")
+@login_required
+def get_settlement_for_user(groupId):
+    """
+    This route gives the current user his different settlements needed
+    Returns None if no settlements needed
+    """
+    all_settlements = get_settlement_transactions(groupId)
+    return all_settlements.get(current_user.id, {})

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { getAllGroupsThunk } from "../../store/groups";
+import "./Dashboard.css"
 
 const Dashboard = () => {
     const dispatch = useDispatch();
     const groups = useSelector((state) => state.groups.allGroups);
+    const history = useHistory()
     // console.log("COMPONENT", groups)
 
     useEffect(() => {
@@ -17,10 +19,12 @@ const Dashboard = () => {
 
       return (
         <div>
+            <button onClick={() => history.push('/groups/new')}>Create New Group</button>
             <div> Groups you are a part of:
                 {Object.values(groups).map((group) => (
                     <div key={group.id}>
-                        <img src={group.imageUrl} alt="img"/>
+                        <NavLink to={`/groups/${group.id}`}>
+                        <img className = "groupImage" src={group.imageUrl} alt="img"/>
                         <div>Group name: {group.group_name}</div>
                         <div> Group description: {group.description}</div>
                         <div>Group members:{group.members.map((member) => (
@@ -28,6 +32,7 @@ const Dashboard = () => {
                                 <div>{member}</div>
                             </div>
                         ))}</div>
+                        </NavLink>
                     </div>
                 ))}
             </div>

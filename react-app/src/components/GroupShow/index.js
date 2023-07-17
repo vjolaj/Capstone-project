@@ -60,7 +60,7 @@ const GroupShow = () => {
         
         Group:
         <div>
-          <img src={group.imageUrl} alt="img" />
+          <img className = "groupImage" src={group.imageUrl} alt="img" />
           <div>
             <OpenModalButton
               buttonText="Delete Group"

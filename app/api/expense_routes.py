@@ -32,12 +32,10 @@ def create_new_expense(groupId):
     
     groupMembers = GroupMember.query.filter_by(group_id = groupId).all()
     number_of_group_members =  GroupMember.query.filter_by(group_id = groupId).count()
-    print("THESE ARE THE GROUP MEMBERS 😻 ", groupMembers)
-    print("THESE ARE THE GROUP MEMBERS 😻 ", number_of_group_members)
+
     
-    # TODO: FIX THIS
-    # if current_user not in groupMembers:
-    #     return {'error': 'need to be a member of the group'}
+    if current_user.id not in [member.user_id for member in GroupMember.query.filter_by(group_id = groupId).all()]:
+        return {'error': 'Must be member of group to post a new expense.'}
     
     if form.validate_on_submit():
         # image = form.data["imageUrl"]
@@ -61,8 +59,29 @@ def create_new_expense(groupId):
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-
-        
+@expense_routes.route('/<int:expenseId>/update', methods=['PUT'])
+@login_required
+def update_expense(expenseId):
+    """
+    This route will update a group's description, amount, and category.
+    """
+    expense_to_update = Expense.query.get(expenseId)
+    form = ExpenseForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    
+    if not current_user.is_authenticated:
+        return {'error': 'unauthorized access'}
+    
+    if current_user.id != expense_to_update.creator_id:
+        return {'error': 'Must be owner of this expense to update it.'}
+    
+    if form.validate_on_submit():
+        expense_to_update.description = form.data['description']
+        expense_to_update.amount = form.data['amount']
+        expense_to_update.category = form.data['category']
+        db.session.commit()
+        return {"expense": expense_to_update.to_dict()}
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
         
         
     
