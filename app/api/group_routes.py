@@ -1,5 +1,6 @@
 from flask import Blueprint, request
-from app.api.expense_logic import get_consolidated_balances, get_settlement_transactions
+from app.api.expense_logic import get_consolidated_balances
+from app.models.settlement_transaction import SettlementTransaction
 from flask_login import current_user, login_required
 from app.models import Group, db, User, GroupMember
 from app.forms import GroupForm, MembersForm
@@ -156,12 +157,14 @@ def get_single_group_balances(groupId):
     return {"balances": per_member_balances}
 
 
-@group_routes.route("/<int:groupId>/settle")
+@group_routes.route("/<int:groupId>/settlement-page")
 @login_required
 def get_settlement_for_user(groupId):
     """
     This route gives the current user his different settlements needed
     Returns None if no settlements needed
     """
-    all_settlements = get_settlement_transactions(groupId)
-    return all_settlements.get(current_user.id, {})
+    user_settlements = SettlementTransaction.query.filter_by(payer_id=current_user.id).filter_by(group_id=groupId).filter_by(is_settled=False).all()
+    # if user_settlements is None:
+    #     return {}
+    return {"settlements":{user_settlement.payee_id: user_settlement.amount for user_settlement in user_settlements}}

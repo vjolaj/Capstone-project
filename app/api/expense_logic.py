@@ -2,7 +2,8 @@ from collections import defaultdict
 
 from app.models.expense import Expense
 from app.models.groupmember import GroupMember
-
+from app.models.settlement_transaction import SettlementTransaction
+from app.models import db
 
 def get_consolidated_balances(group_id):
     expenses = Expense.query.filter_by(group_id=group_id)
@@ -37,7 +38,7 @@ def any_balance_nonzero(consolidated_balances):
     return False
 
 
-def get_settlement_transactions(group_id):
+def update_settlement_transactions(group_id):
     """
     Returns a dictionary of dictionaries, where the key for toplevel is the payer,
     the key for bottom level is the payee, the value for the bottom level is the amount
@@ -45,9 +46,10 @@ def get_settlement_transactions(group_id):
     
     """
     consolidated_balances = get_consolidated_balances(group_id)
+    existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).all()
     
-    settlements_dict = defaultdict(dict)
-    # settlement_transactions = []
+    # settlements_dict = defaultdict(dict)
+    settlement_transactions = []
     while any_balance_nonzero(consolidated_balances):
         # we want to use the maximum positive and negative balances for the transactions
         max_positive_balance_user = max(consolidated_balances, key = lambda x: consolidated_balances[x])
@@ -60,19 +62,25 @@ def get_settlement_transactions(group_id):
             
         consolidated_balances[max_negative_balance_user] += amount_for_settlement
         consolidated_balances[max_positive_balance_user] -= amount_for_settlement
-        settlements_dict[max_negative_balance_user][max_positive_balance_user] = amount_for_settlement
+        # settlements_dict[max_negative_balance_user][max_positive_balance_user] = amount_for_settlement
+        
         # settlement_transactions.append(SettlementTransaction(payer_id=max_negative_balance_user, payee_id=max_positive_balance_user, group_id=group_id, amount=amount_for_settlement))
+        settlement_transactions.append(SettlementTransaction(payer_id=max_negative_balance_user, payee_id=max_positive_balance_user, group_id=group_id, amount=amount_for_settlement, is_settled=False))
+    try:
+        SettlementTransaction.query.filter_by(group_id=group_id).delete()
+
+        # SettlementTransaction.add_all(settlement_transactions)
+        db.session.add_all(settlement_transactions)
+        db.session.commit()
+    except:
+        SettlementTransaction.query.filter_by(group_id=group_id).delete()
+        db.session.add_all(existing_settlement_transactions)
+        db.session.commit()
+        raise Exception("Issue with updating SettlementTransaction, changes not applied")
         
-    #SettlmentTransactions.delete_bulk(group_id=group_id)
-    #Settlement.add_buk(settlement_transactions)
-        
-    return settlements_dict
+    # return settlements_dict
             
             
-        
-        
-        
-        
         
         
         

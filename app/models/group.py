@@ -15,7 +15,7 @@ class Group(db.Model):
     expenses = db.relationship('Expense', back_populates='group')
     group_members = db.relationship('GroupMember', back_populates='group', cascade='all, delete-orphan')
     creator = db.relationship('User', back_populates='created_groups')
-    # settlement_transactions = db.relationship('Group', back_populates='group')
+    settlement_transactions = db.relationship('SettlementTransaction', back_populates='group', foreign_keys='SettlementTransaction.group_id')
 
     def to_dict(self):
         members = [member.user.username for member in self.group_members]

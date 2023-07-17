@@ -14,12 +14,10 @@ class Expense(db.Model):
     category = db.Column(db.String)
     created_at = db.Column(db.DateTime)
     imageUrl = db.Column(db.String(255))
-    is_settled = db.Column(db.Boolean, nullable=False)
     
     creator = db.relationship('User', back_populates='expenses')
     group = db.relationship('Group', back_populates='expenses')
     comments = db.relationship('Comment', back_populates='expense')
-    payments = db.relationship('Payment', back_populates='expense')
 
     def to_dict(self):
         return {
@@ -31,7 +29,6 @@ class Expense(db.Model):
             'category': self.category,
             'created_at': self.created_at,
             'imageUrl': self.imageUrl,
-            'is_settled': self.is_settled
         }
     
     

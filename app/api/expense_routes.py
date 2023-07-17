@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 from flask import Blueprint, request
+from app.api.expense_logic import update_settlement_transactions
 from flask_login import current_user, login_required
 from app.models import Group, db, User, GroupMember, Expense
 from app.forms import ExpenseForm
@@ -51,10 +52,11 @@ def create_new_expense(groupId):
             # imageUrl= upload['url'],
             imageUrl = form.data['imageUrl'],
             created_at = db.func.now(),
-            is_settled = False
         )
         db.session.add(new_expense)
         db.session.commit()
+        # update settlement transactions now that there's a new transaction
+        update_settlement_transactions(groupId)
         return {"expense": new_expense.to_dict()}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
@@ -76,10 +78,14 @@ def update_expense(expenseId):
         return {'error': 'Must be owner of this expense to update it.'}
     
     if form.validate_on_submit():
+        existing_amount = expense_to_update.amount
         expense_to_update.description = form.data['description']
         expense_to_update.amount = form.data['amount']
         expense_to_update.category = form.data['category']
         db.session.commit()
+        # only update settlement transactions if the amount changed
+        if existing_amount != form.data['amount']:
+            update_settlement_transactions(expense_to_update.group_id)
         return {"expense": expense_to_update.to_dict()}
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
         
