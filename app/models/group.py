@@ -24,6 +24,7 @@ class Group(db.Model):
             'group_name': self.group_name,
             'description': self.description,
             'imageUrl': self.imageUrl,
+            'creator_id': self.creator_id,
             'members': members
         }
     
