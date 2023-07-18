@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useModal } from "../../context/Modal";
 import { addGroupMemberThunk, getAllGroupsThunk } from "../../store/groups";
+import { getAllGroupBalancesThunk } from "../../store/settlements";
+import { getAllGroupExpensesRoutes } from "../../store/expenses";
+import { getGroupSettlementThunk } from "../../store/settlements";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import './AddMemberModal.css'
@@ -38,6 +41,9 @@ function AddMemberModal({ group, users }) {
     dispatch(addGroupMemberThunk(group.id, userName)).then(() => {
       closeModal();
       dispatch(getAllGroupsThunk());
+      dispatch(getAllGroupExpensesRoutes(group.id));
+      dispatch(getAllGroupBalancesThunk(group.id));
+      dispatch(getGroupSettlementThunk(group.id));
       history.push(`/groups/${group.id}`);
     });
   };

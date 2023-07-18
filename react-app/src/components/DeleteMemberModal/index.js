@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useModal } from "../../context/Modal";
 import { deleteGroupMemberThunk, getAllGroupsThunk } from "../../store/groups";
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { getAllGroupBalancesThunk } from "../../store/settlements";
+import { getAllGroupExpensesRoutes } from "../../store/expenses";
+import { getGroupSettlementThunk } from "../../store/settlements";
 
 function DeleteMemberModal({ group, member }) {
     const { closeModal } = useModal();
@@ -18,6 +20,9 @@ function DeleteMemberModal({ group, member }) {
       .then(() => {
           closeModal();
           dispatch(getAllGroupsThunk());
+          dispatch(getAllGroupExpensesRoutes(group.id));
+          dispatch(getAllGroupBalancesThunk(group.id));
+          dispatch(getGroupSettlementThunk(group.id));
           history.push(`/groups/${group.id}`)
       })
     };

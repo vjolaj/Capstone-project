@@ -5,6 +5,8 @@ import { useHistory } from "react-router-dom";
 import { createExpenseThunk } from "../../store/expenses";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
+import { getGroupSettlementThunk } from "../../store/settlements";
+import { getAllGroupBalancesThunk } from "../../store/settlements";
 
 function AddExpenseModal({ group }) {
   const dispatch = useDispatch();
@@ -13,11 +15,18 @@ function AddExpenseModal({ group }) {
   const sessionUser = useSelector((state) => state.session.user);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-//   const [image, setImage] = useState(null);
+  //   const [image, setImage] = useState(null);
   const [expenseCategory, setExpenseCategory] = useState("");
-//   const [imageLoading, setImageLoading] = useState(false);
+  //   const [imageLoading, setImageLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
-  const expenseCategories = ["", "Transportation", "Housing", "Utilities", "Food", "Entertainment"];
+  const expenseCategories = [
+    "",
+    "Transportation",
+    "Housing",
+    "Utilities",
+    "Food",
+    "Entertainment",
+  ];
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
@@ -26,7 +35,7 @@ function AddExpenseModal({ group }) {
       errorsObject.amount = "Amount is required";
     }
     if (isNaN(amount)) {
-        errorsObject.amount = "Amount must be a numeric value"
+      errorsObject.amount = "Amount must be a numeric value";
     }
     if (description.length > 255) {
       errorsObject.description =
@@ -44,10 +53,10 @@ function AddExpenseModal({ group }) {
     e.preventDefault();
     setSubmitted(true);
     const newExpense = {
-        amount,
-        expenseCategory,
-        description
-    }
+      amount,
+      expenseCategory,
+      description,
+    };
     // const formData = new FormData();
     // formData.append("amount", amount);
     // formData.append("imageUrl", image);
@@ -60,13 +69,14 @@ function AddExpenseModal({ group }) {
       return null;
     }
     setValidationErrors({});
-    return dispatch(createExpenseThunk(group.id, newExpense))
-    .then(() => {
-        closeModal()
-        dispatch(getAllGroupsThunk());
-        dispatch(getAllGroupExpensesRoutes(group.id))
-        history.push(`/groups/${group.id}`)
-    })
+    return dispatch(createExpenseThunk(group.id, newExpense)).then(() => {
+      closeModal();
+      dispatch(getAllGroupsThunk());
+      dispatch(getAllGroupExpensesRoutes(group.id));
+      dispatch(getAllGroupBalancesThunk(group.id));
+      dispatch(getGroupSettlementThunk(group.id));
+      history.push(`/groups/${group.id}`);
+    });
   };
 
   return (

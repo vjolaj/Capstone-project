@@ -20,6 +20,9 @@ function LoginFormPage() {
     if (data) {
       setErrors(data);
     }
+    else {
+      history.push("/dashboard")
+    }
   };
 
   const demoUser = async (e) => {

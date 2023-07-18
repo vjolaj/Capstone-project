@@ -5,6 +5,8 @@ import { useHistory } from "react-router-dom";
 import { editExpenseThunk } from "../../store/expenses";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
+import { getAllGroupBalancesThunk } from "../../store/settlements";
+import { getGroupSettlementThunk } from "../../store/settlements";
 
 function EditExpenseModal({ expense, group }) {
   const dispatch = useDispatch();
@@ -64,6 +66,8 @@ function EditExpenseModal({ expense, group }) {
         closeModal()
         dispatch(getAllGroupsThunk());
         dispatch(getAllGroupExpensesRoutes(group.id))
+        dispatch(getAllGroupBalancesThunk(group.id));
+        dispatch(getGroupSettlementThunk(group.id));
         history.push(`/groups/${group.id}`)
     })
   };
