@@ -4,6 +4,7 @@ from app.models.expense import Expense
 from app.models.groupmember import GroupMember
 from app.models.settlement_transaction import SettlementTransaction
 from app.models import db
+from app.models.user import User
 
 ######## HELPERS #########
 
@@ -60,6 +61,7 @@ def get_consolidated_balances(group_id):
     # also take into account the settlements in the group
     amounts_outstanding = {}
     for member in group_members:
+        # user = User.query.get(member)
         amount_expended_by_member = amounts_expended_per_member.get(member, 0)
         settlements_received_by_member = get_settled_amount_for_member(group_id, member, is_payer=False)
         settlements_paid_by_member = get_settled_amount_for_member(group_id, member, is_payer=True)
@@ -80,7 +82,7 @@ def update_settlement_transactions(group_id):
     
     """
     consolidated_balances = get_consolidated_balances(group_id)
-    existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).all()
+    existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).filter_by.all()
     
     # settlements_dict = defaultdict(dict)
     settlement_transactions = []
@@ -114,8 +116,3 @@ def update_settlement_transactions(group_id):
         
     # return settlements_dict
             
-            
-        
-        
-        
-        

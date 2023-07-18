@@ -22,6 +22,7 @@ class SettlementTransaction(db.Model):
             'id': self.id,
             'payer_id': self.payer_id,
             'payee_id': self.payee_id,
+            'payee_username': self.payee.username,
             'amount': self.amount,
             'is_settled': self.is_settled
         }

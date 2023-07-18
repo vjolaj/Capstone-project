@@ -108,6 +108,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
   return data;
 };
 
+
 export const readSingleGroupThunk = (groupId) => async (dispatch) => {
   const res = await fetch(`/api/groups/${groupId}`);
   const { resGroup } = await res.json();

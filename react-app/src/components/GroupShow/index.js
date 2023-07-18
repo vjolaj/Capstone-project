@@ -6,25 +6,28 @@ import {
   createGroupThunk,
   getAllGroupsThunk,
   readSingleGroupThunk,
-  editGroupThunk
+  editGroupThunk,
 } from "../../store/groups";
-import { getAllGroupExpensesRoutes } from "../../store/expenses"
+import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { getAllUsersThunk } from "../../store/users";
+import { getAllGroupBalancesThunk, getGroupSettlementThunk } from "../../store/settlements";
 import OpenModalButton from "../OpenModalButton";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import AddMemberModal from "../AddMemberModal";
 import DeleteMemberModal from "../DeleteMemberModal";
 import DeleteGroupModal from "../DeleteGroupModal";
 import AddExpenseModal from "../AddExpenseModal";
+import EditExpenseModal from "../EditExpenseModal";
+import ConfirmSettlementModal from "../ConfirmSettlementModal";
 
 const GroupShow = () => {
   const { groupId } = useParams();
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
   const group = useSelector((state) => state.groups.allGroups[groupId]);
-  const groupExpenses = useSelector((state) => state.expenses.groupExpenses)
-  // console.log(groupExpenses)
-  // const group = useSelector((state) => state.groups.singleGroup)
+  const groupExpenses = useSelector((state) => state.expenses.groupExpenses);
+  const groupBalances = useSelector((state) => state.settlements.balances);
+  const groupSettlement = useSelector((state) => state.settlements.settlements)
   const [description, setDescription] = useState("");
   const history = useHistory();
 
@@ -34,11 +37,12 @@ const GroupShow = () => {
     }
   }, [group]);
 
-
   useEffect(() => {
     dispatch(getAllGroupsThunk());
-    dispatch(readSingleGroupThunk(groupId))
-    dispatch(getAllGroupExpensesRoutes(groupId))
+    dispatch(readSingleGroupThunk(groupId));
+    dispatch(getAllGroupExpensesRoutes(groupId));
+    dispatch(getAllGroupBalancesThunk(groupId));
+    dispatch(getGroupSettlementThunk(groupId))
   }, [dispatch, groupId]);
 
   const users = useSelector((state) => state.users.users);
@@ -49,22 +53,22 @@ const GroupShow = () => {
 
   const handleDescriptionChange = async (e) => {
     e.preventDefault();
-    dispatch(editGroupThunk(description, group.id))
-    .then(() => {
-      setEditMode(false)
+    dispatch(editGroupThunk(description, group.id)).then(() => {
+      setEditMode(false);
       dispatch(getAllGroupsThunk());
-      history.push(`/groups/${group.id}`)
-  })
+      history.push(`/groups/${group.id}`);
+    });
   };
 
   if (!group) return null;
+  if (!groupExpenses) return null;
 
   return (
     <div>
       <div>
         Group:
         <div>
-          <img className = "groupImage" src={group.imageUrl} alt="img" />
+          <img className="groupImage" src={group.imageUrl} alt="img" />
           <div>
             <OpenModalButton
               buttonText="Delete Group"
@@ -84,17 +88,53 @@ const GroupShow = () => {
           {editMode ? (
             <button onClick={handleDescriptionChange}>Save description</button>
           ) : (
-            <button onClick={() => setEditMode(true)}>
-              Edit description
-            </button>
+            <button onClick={() => setEditMode(true)}>Edit description</button>
           )}
+          <div>
+            {Object.entries(groupBalances).map(([key, value]) => (
+              <div key={key}>
+                {key}
+                {value > 0 ? ` is owed $${value}` : ` owes $${Math.abs(value)}`}
+              </div>
+            ))}
+          </div>
+          <div>
+            In order to get you settled up in this group:
+            <div>
+            {Object.values(groupSettlement).map((settlement) => (
+              <div key={settlement.id}>
+                You owe {settlement.payee_username} ${settlement.amount}
+                <div>
+                  <OpenModalButton
+                    buttonText="Confirm Settlement"
+                    modalComponent={
+                      <ConfirmSettlementModal settlement={settlement} group={group} />
+                    }
+                  />
+                </div>
+              </div>
+            ))}
+
+          </div>
+          </div>
           <div>
             Group Expenses:
             {Object.values(groupExpenses).map((expense) => (
               <div key={expense.id}>
                 <div>Expense Category: {expense.category}</div>
                 <div>Expense description: {expense.description}</div>
-                <div>{expense.creator_name} posted a ${expense.amount} expense on {expense.created_at}</div>
+                <div>
+                  {expense.creator_name} posted a ${expense.amount} expense on{" "}
+                  {expense.created_at}
+                </div>
+                <div>
+                  <OpenModalButton
+                    buttonText="Edit Expense"
+                    modalComponent={
+                      <EditExpenseModal expense={expense} group={group} />
+                    }
+                  />
+                </div>
               </div>
             ))}
           </div>

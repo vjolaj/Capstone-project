@@ -39,9 +39,9 @@ def create_new_expense(groupId):
         return {'error': 'Must be member of group to post a new expense.'}
     
     if form.validate_on_submit():
-        image = form.data["imageUrl"]
-        image.filename = get_unique_filename(image.filename)
-        upload = upload_file_to_s3(image)
+        # image = form.data["imageUrl"]
+        # image.filename = get_unique_filename(image.filename)
+        # upload = upload_file_to_s3(image)
         
         new_expense = Expense (
             amount =  form.data['amount'],
@@ -49,8 +49,8 @@ def create_new_expense(groupId):
             group_id = groupId,
             description = form.data['description'],
             category = form.data['category'],
-            imageUrl= upload['url'],
-            # imageUrl = form.data['imageUrl'],
+            # imageUrl= upload['url'],
+            # # imageUrl = form.data['imageUrl'],
             created_at = db.func.now(),
         )
         db.session.add(new_expense)

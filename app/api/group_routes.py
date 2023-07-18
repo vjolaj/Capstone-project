@@ -154,7 +154,11 @@ def get_single_group_balances(groupId):
     This route will return the balances of each user within a group.
     """
     per_member_balances = get_consolidated_balances(groupId)
-    return {"balances": per_member_balances}
+    if per_member_balances is None:
+        return {'balances': 'no balances for this group'}
+    user_id_to_name_map = {group_member.user.id: group_member.user.username for group_member in GroupMember.query.filter_by(group_id=groupId).all()}
+    per_username_balances = {user_id_to_name_map[user_id]: per_member_balances[user_id] for user_id in per_member_balances.keys()}
+    return {"balances": per_username_balances}
 
 
 # @group_routes.route("/<int:groupId>/settlement-page")

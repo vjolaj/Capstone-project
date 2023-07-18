@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createExpenseThunk } from "../../store/expenses";
+import { editExpenseThunk } from "../../store/expenses";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
 
-function AddExpenseModal({ group }) {
+function EditExpenseModal({ expense, group }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const history = useHistory();
   const sessionUser = useSelector((state) => state.session.user);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-//   const [image, setImage] = useState(null);
   const [expenseCategory, setExpenseCategory] = useState("");
-//   const [imageLoading, setImageLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const expenseCategories = ["", "Transportation", "Housing", "Utilities", "Food", "Entertainment"];
   const [submitted, setSubmitted] = useState(false);
@@ -40,27 +38,28 @@ function AddExpenseModal({ group }) {
     setValidationErrors(errorsObject);
   }, [amount, description, expenseCategory]);
 
+  useEffect(() => {
+    if (expense) {
+      setAmount(expense.amount || "");
+      setDescription(expense.description || "");
+      setExpenseCategory(expense.category || "");
+    }
+  }, [expense]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
-    const newExpense = {
+    const editedExpense = {
         amount,
         expenseCategory,
         description
     }
-    // const formData = new FormData();
-    // formData.append("amount", amount);
-    // formData.append("imageUrl", image);
-    // formData.append("description", description);
-    // formData.append("category", expenseCategory);
-    // aws uploads can be a bit slow—displaying
-    // some sort of loading message is a good idea
-    // setImageLoading(true);
+
     if (Object.values(validationErrors).length) {
       return null;
     }
     setValidationErrors({});
-    return dispatch(createExpenseThunk(group.id, newExpense))
+    return dispatch(editExpenseThunk(expense.id, editedExpense))
     .then(() => {
         closeModal()
         dispatch(getAllGroupsThunk());
@@ -124,25 +123,8 @@ function AddExpenseModal({ group }) {
               <p className="error">{validationErrors.expenseCategory}</p>
             )}
           </label>
-          {/* <div className="form-input-box">
-            <div
-              className="imageInputContainer longerFormContainer"
-              htmlFor="image"
-            >
-              Post an image for your group.
-              <input
-                id="image"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImage(e.target.files[0])}
-              ></input>
-              {submitted && validationErrors.image && (
-                <p className="error">{validationErrors.image}</p>
-              )}
-            </div>
-          </div> */}
           <button type="submit" className="submit-form-button">
-            Add your Expense
+            Edit your Expense
           </button>
         </form>
       </div>
@@ -150,4 +132,4 @@ function AddExpenseModal({ group }) {
   );
 }
 
-export default AddExpenseModal;
+export default EditExpenseModal;

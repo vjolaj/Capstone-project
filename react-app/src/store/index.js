@@ -4,12 +4,14 @@ import session from './session'
 import groupsReducer from './groups';
 import usersReducer from './users';
 import expensesReducer from './expenses';
+import settlementsReducer from './settlements';
 
 const rootReducer = combineReducers({
   session,
   groups: groupsReducer,
   users: usersReducer,
-  expenses: expensesReducer
+  expenses: expensesReducer,
+  settlements: settlementsReducer
 });
 
 

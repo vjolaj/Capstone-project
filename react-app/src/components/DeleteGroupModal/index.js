@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useModal } from "../../context/Modal";
 import { deleteGroupThunk, getAllGroupsThunk } from "../../store/groups";
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
-import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 function DeleteGroupModal({ group }) {
     const { closeModal } = useModal();
