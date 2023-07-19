@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from app.api.expense_logic import get_consolidated_balances
+from app.models.expense import Expense
 from app.models.settlement_transaction import SettlementTransaction
 from flask_login import current_user, login_required
 from app.models import Group, db, User, GroupMember
@@ -56,7 +57,10 @@ def add_members(groupId):
     This route will add a group member to a group.
     """
     group = Group.query.get(groupId)
-        
+    groupExpenses = Expense.query.filter_by(group_id=groupId).all()
+    if groupExpenses:
+        return {'error': "You can't add members once expenses are recorded on the group."}, 403
+    
     if current_user.id != group.creator_id:
         return {'error': 'unathorized access'}, 403
     form = MembersForm()
@@ -84,6 +88,11 @@ def remove_members(groupId):
     This route will remove a group member from its group.
     """
     group = Group.query.get(groupId)
+    per_member_balances = get_consolidated_balances(groupId)
+    for value in per_member_balances.values():
+        if float(value) != 0:
+            return {'error': "You can't remove members if there are unsettled balances."}
+
     form = MembersForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     
@@ -130,6 +139,10 @@ def delete_group(groupId):
     This route will delete a group.
     """
     group_to_delete = Group.query.get(groupId)
+    per_member_balances = get_consolidated_balances(groupId)
+    for value in per_member_balances.values():
+        if float(value) != 0:
+            return {'error': "You can't delete group if there are unsettled balances."}
     if current_user.id != group_to_delete.creator_id:
         return {'error': 'unathorized access'}, 403
     db.session.delete(group_to_delete)
@@ -153,6 +166,7 @@ def get_single_group_balances(groupId):
     """
     This route will return the balances of each user within a group.
     """
+
     per_member_balances = get_consolidated_balances(groupId)
     if per_member_balances is None:
         return {'balances': 'no balances for this group'}

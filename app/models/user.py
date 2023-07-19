@@ -23,7 +23,9 @@ class User(db.Model, UserMixin):
     payments_sent = db.relationship('SettlementTransaction', back_populates='payer', foreign_keys='SettlementTransaction.payer_id')
     payments_received = db.relationship('SettlementTransaction', back_populates='payee', foreign_keys='SettlementTransaction.payee_id')
     created_groups = db.relationship('Group', back_populates='creator')
-
+    settled_payments_sent = db.relationship('Payment', back_populates = 'payment_payer', foreign_keys='Payment.payer_id')
+    settled_payments_received = db.relationship('Payment', back_populates = 'payment_payee', foreign_keys='Payment.payee_id')
+    
     @property
     def password(self):
         return self.hashed_password

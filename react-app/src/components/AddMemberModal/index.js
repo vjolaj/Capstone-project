@@ -56,6 +56,7 @@ function AddMemberModal({ group, users }) {
     <div>
       <form onSubmit={handleSubmit}>
         <h2>Search for a user to add to group</h2>
+        <h4>FYI: you can't add group members once you start recording expenses, and you can't delete group members if there are any unsettled balances in the group.</h4>
         <input
           placeholder="Search for a username"
           value={search}

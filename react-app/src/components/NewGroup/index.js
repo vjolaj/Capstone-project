@@ -76,7 +76,8 @@ export default function NewGroup() {
                   <li key={idx}>{error}</li>
                 ))}
               </ul> */}
-            <div className="formHeading">Add a new group</div>
+            <h2 className="formHeading">Add a new group</h2>
+            <h4>FYI: you cannot delete a group if there are unsettled balances in the group.</h4>
             <div className="individualFormContainer">
               Enter a name for your group
               <input

@@ -46,9 +46,15 @@ export const getAllGroupBalancesThunk = (groupId) => async (dispatch) => {
   return data;
   };
   
-  export const makeNewSettlementThunk = (settlementId) => async (dispatch) => {
+  export const makeNewSettlementThunk = (settlementId, method) => async (dispatch) => {
     const res = await fetch(`/api/settlements/${settlementId}`, {
-        method: "PUT"
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          method: method,
+        }),
     })
     const data = await res.json();
     dispatch(readGroupSettlementAction(data))

@@ -5,5 +5,5 @@ from wtforms.validators import DataRequired, Length
 class ExpenseForm(FlaskForm):
     amount=DecimalField('Amount', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired(), Length(max=255)])
-    category = SelectField('Item Type', choices=[('Transportation', 'Transportation'), ('Housing', 'Housing'), ('Utilities', 'Utilities'), ('Food', 'Food'), ('Entertainment', 'Entertainment') ])
+    category = SelectField('Item Type', choices=[('Transportation', 'Transportation'), ('Housing', 'Housing'), ('Utilities', 'Utilities'), ('Food', 'Food'), ('Entertainment', 'Entertainment')], validators=[DataRequired()])
     imageUrl = StringField('ImageUrl')

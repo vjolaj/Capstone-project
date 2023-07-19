@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from app.models.expense import Expense
 from app.models.groupmember import GroupMember
+from app.models.payments import Payment
 from app.models.settlement_transaction import SettlementTransaction
 from app.models import db
 from app.models.user import User
@@ -36,9 +37,11 @@ def get_settled_amount_for_member(group_id, user_id, is_payer):
     For a given member in a group, gets how much they paid/received in settlements
     """
     if is_payer:
-        settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).filter_by(is_settled=True).all()
+        settlements = Payment.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).all()
+        # settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).filter_by(is_settled=True).all()
     else:
-        settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payee_id=user_id).filter_by(is_settled=True).all()
+        settlements = Payment.query.filter_by(group_id=group_id).filter_by(payee_id=user_id).all()
+        # settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payee_id=user_id).filter_by(is_settled=True).all()
     return sum([settlement.amount for settlement in settlements])
 
 
@@ -82,7 +85,7 @@ def update_settlement_transactions(group_id):
     
     """
     consolidated_balances = get_consolidated_balances(group_id)
-    existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).filter_by.all()
+    existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).all()
     
     # settlements_dict = defaultdict(dict)
     settlement_transactions = []
@@ -104,7 +107,6 @@ def update_settlement_transactions(group_id):
         settlement_transactions.append(SettlementTransaction(payer_id=max_negative_balance_user, payee_id=max_positive_balance_user, group_id=group_id, amount=amount_for_settlement, is_settled=False))
     try:
         SettlementTransaction.query.filter_by(group_id=group_id).delete()
-
         # SettlementTransaction.add_all(settlement_transactions)
         db.session.add_all(settlement_transactions)
         db.session.commit()

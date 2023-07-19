@@ -34,12 +34,25 @@ const GroupShow = () => {
   const groupSettlement = useSelector((state) => state.settlements.settlements);
   const [description, setDescription] = useState("");
   const history = useHistory();
+  const [submitted, setSubmitted] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     if (group) {
       setDescription(group.description || "");
     }
   }, [group]);
+
+  useEffect(() => {
+    const errorsObject = {};
+    if (!description) {
+      errorsObject.description = "Description is required"}
+    if (description.length > 255) {
+      errorsObject.description = "Description can't be longer than 255 characters.";
+      }
+    
+    setValidationErrors(errorsObject);
+  }, [description]);
 
   useEffect(() => {
     dispatch(getAllGroupsThunk());
@@ -57,6 +70,11 @@ const GroupShow = () => {
 
   const handleDescriptionChange = async (e) => {
     e.preventDefault();
+    setSubmitted(true);
+    if (Object.values(validationErrors).length) {
+      return null;
+    }
+    setValidationErrors({});
     dispatch(editGroupThunk(description, group.id)).then(() => {
       setEditMode(false);
       dispatch(getAllGroupsThunk());
@@ -74,14 +92,15 @@ const GroupShow = () => {
         Group:
         <div>
           <img className="groupImage" src={group.imageUrl} alt="img" />
-          {current_user.id == group.creator_id && (
-            <div>
-              <OpenModalButton
-                buttonText="Delete Group"
-                modalComponent={<DeleteGroupModal group={group} />}
-              />
-            </div>
-          )}
+          {current_user.id == group.creator_id &&
+            Object.values(groupBalances).every((balance) => balance === 0) && (
+              <div>
+                <OpenModalButton
+                  buttonText="Delete Group"
+                  modalComponent={<DeleteGroupModal group={group} />}
+                />
+              </div>
+            )}
           <div>Group name: {group.group_name}</div>
           {current_user && current_user.id === group.creator_id && (
             <>
@@ -95,9 +114,14 @@ const GroupShow = () => {
                 <div>Group description: {group.description}</div>
               )}
               {editMode ? (
-                <button onClick={handleDescriptionChange}>
-                  Save description
-                </button>
+                <>
+                  <button onClick={handleDescriptionChange}>
+                    Save description
+                  </button>
+                  {submitted && validationErrors.description && (
+                    <p className="error">{validationErrors.description}</p>
+                  )}
+                </>
               ) : (
                 <button onClick={() => setEditMode(true)}>
                   Edit description
@@ -123,49 +147,53 @@ const GroupShow = () => {
               In order to get you settled up in this group:
               {groupBalances[current_user.username] > 0 ? (
                 <div>You must wait for payments from members</div>
-              ) : <div>
-                {Object.values(groupSettlement).map((settlement) => (
-                  <div key={settlement.id}>
-                    You owe {settlement.payee_username} ${settlement.amount}
-                    <div>
-                      <OpenModalButton
-                        buttonText="Confirm Settlement"
-                        modalComponent={
-                          <ConfirmSettlementModal
-                            settlement={settlement}
-                            group={group}
-                          />
-                        }
-                      />
+              ) : (
+                <div>
+                  {Object.values(groupSettlement).map((settlement) => (
+                    <div key={settlement.id}>
+                      You owe {settlement.payee_username} ${settlement.amount}
+                      <div>
+                        <OpenModalButton
+                          buttonText="Confirm Settlement"
+                          modalComponent={
+                            <ConfirmSettlementModal
+                              settlement={settlement}
+                              group={group}
+                            />
+                          }
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>}
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
           <div>
             Group Expenses:
-            {Object.values(groupExpenses).map((expense) => (
-              <div key={expense.id}>
-                <div>Expense Category: {expense.category}</div>
-                <div>Expense description: {expense.description}</div>
-                <div>
-                  {expense.creator_name} posted a ${expense.amount} expense on{" "}
-                  {expense.created_at}
-                </div>
-                {current_user && current_user.id === expense.creator_id && (
+            {Object.values(groupExpenses)
+              .map((expense) => (
+                <div key={expense.id}>
+                  <div>Expense Category: {expense.category}</div>
+                  <div>Expense description: {expense.description}</div>
                   <div>
-                    <OpenModalButton
-                      buttonText="Edit Expense"
-                      modalComponent={
-                        <EditExpenseModal expense={expense} group={group} />
-                      }
-                    />
+                    {expense.creator_name} posted a ${expense.amount} expense on{" "}
+                    {expense.created_at}
                   </div>
-                )}
-              </div>
-            ))}
+                  {current_user && current_user.id === expense.creator_id && (
+                    <div>
+                      <OpenModalButton
+                        buttonText="Edit Expense"
+                        modalComponent={
+                          <EditExpenseModal expense={expense} group={group} />
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              ))
+              .reverse()}
           </div>
           <div>
             <OpenModalButton
@@ -180,7 +208,10 @@ const GroupShow = () => {
                 <div>{member}</div>
                 {current_user &&
                   current_user.id === group.creator_id &&
-                  current_user.username != member && (
+                  current_user.username != member &&
+                  Object.values(groupBalances).every(
+                    (balance) => balance === 0
+                  ) && (
                     <div>
                       <OpenModalButton
                         buttonText="Remove Member"
@@ -193,14 +224,18 @@ const GroupShow = () => {
               </div>
             ))}
           </div>
-          {current_user && current_user.id === group.creator_id && (
-            <div>
-              <OpenModalButton
-                buttonText="Add a Member"
-                modalComponent={<AddMemberModal group={group} users={users} />}
-              />
-            </div>
-          )}
+          {current_user &&
+            current_user.id === group.creator_id &&
+            Object.values(groupExpenses).length === 0 && (
+              <div>
+                <OpenModalButton
+                  buttonText="Add a Member"
+                  modalComponent={
+                    <AddMemberModal group={group} users={users} />
+                  }
+                />
+              </div>
+            )}
         </div>
       </div>
     </div>

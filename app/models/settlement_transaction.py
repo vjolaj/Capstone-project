@@ -16,6 +16,7 @@ class SettlementTransaction(db.Model):
     payer = db.relationship('User', back_populates='payments_sent', foreign_keys=[payer_id])
     payee = db.relationship('User', back_populates='payments_received', foreign_keys=[payee_id])
     group = db.relationship('Group', back_populates='settlement_transactions', foreign_keys=[group_id])
+    payments = db.relationship('Payment', back_populates='payment_settlement_transaction', foreign_keys='Payment.settlement_transaction_id')
 
     def to_dict(self):
         return {

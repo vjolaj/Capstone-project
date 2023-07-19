@@ -13,7 +13,6 @@ class Expense(db.Model):
     description = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String)
     created_at = db.Column(db.DateTime)
-    imageUrl = db.Column(db.String(255))
     
     creator = db.relationship('User', back_populates='expenses')
     group = db.relationship('Group', back_populates='expenses')
@@ -28,8 +27,7 @@ class Expense(db.Model):
             'group_id': self.group_id,
             'description': self.description,
             'category': self.category,
-            'created_at': self.created_at,
-            'imageUrl': self.imageUrl,
+            'created_at': self.created_at
         }
     
     
