@@ -28,7 +28,7 @@ def any_balance_nonzero(consolidated_balances):
     If there are any non zero balances return False
     """
     for member in consolidated_balances:
-        if consolidated_balances[member] != 0:
+        if round(consolidated_balances[member],2) != 0.:
             return True
     return False
 

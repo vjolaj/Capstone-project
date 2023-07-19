@@ -89,7 +89,7 @@ const GroupShow = () => {
   return (
     <div>
       <div>
-        Group:
+        <h3>Group:</h3>
         <div>
           <img className="groupImage" src={group.imageUrl} alt="img" />
           {current_user.id == group.creator_id &&
@@ -133,6 +133,7 @@ const GroupShow = () => {
             <div>Group description: {group.description}</div>
           )}
           <div>
+            <h4>Group Balances</h4>
             {Object.entries(groupBalances).map(([key, value]) => (
               <div key={key}>
                 {key}
@@ -144,7 +145,7 @@ const GroupShow = () => {
             <div>You are settled up in this group</div>
           ) : (
             <div>
-              In order to get you settled up in this group:
+              <h4>In order to get you settled up in this group:</h4>
               {groupBalances[current_user.username] > 0 ? (
                 <div>You must wait for payments from members</div>
               ) : (
@@ -171,7 +172,7 @@ const GroupShow = () => {
           )}
 
           <div>
-            Group Expenses:
+            <h4>Group Expenses:</h4>
             {Object.values(groupExpenses)
               .map((expense) => (
                 <div key={expense.id}>
@@ -202,7 +203,7 @@ const GroupShow = () => {
             />
           </div>
           <div>
-            Group members:
+            <h4>Group Members</h4>
             {group.members.map((member) => (
               <div key={member.id}>
                 <div>{member}</div>
