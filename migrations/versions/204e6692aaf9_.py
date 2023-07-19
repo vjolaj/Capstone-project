@@ -8,6 +8,9 @@ Create Date: 2023-07-19 08:45:27.891067
 from alembic import op
 import sqlalchemy as sa
 
+import os
+environment = os.getenv("FLASK_ENV")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '204e6692aaf9'
@@ -29,6 +32,9 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+        
     op.create_table('budgets',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -38,6 +44,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE budgets SET SCHEMA {SCHEMA};")
+        
     op.create_table('groups',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('group_name', sa.String(length=255), nullable=False),
@@ -48,6 +57,9 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('group_name')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE groups SET SCHEMA {SCHEMA};")
+        
     op.create_table('expenses',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('amount', sa.Numeric(precision=4, scale=2), nullable=False),
@@ -60,6 +72,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE expenses SET SCHEMA {SCHEMA};")
+
     op.create_table('group_members',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
@@ -68,6 +83,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE group_members SET SCHEMA {SCHEMA};")
+
     op.create_table('settlement_transactions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('payer_id', sa.Integer(), nullable=False),
@@ -80,6 +98,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['payer_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "production":
+        op.execute(f"ALTER TABLE settlement_transactions SET SCHEMA {SCHEMA};")
+        
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -89,6 +110,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "comments":
+        op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
+        
     op.create_table('payments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('settlement_transaction_id', sa.Integer(), nullable=False),
@@ -104,6 +128,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['settlement_transaction_id'], ['settlement_transactions.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if environment == "payments":
+        op.execute(f"ALTER TABLE payments SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
@@ -112,8 +138,8 @@ def downgrade():
     op.drop_table('payments')
     op.drop_table('comments')
     op.drop_table('settlement_transactions')
-    op.drop_table('group_members')
     op.drop_table('expenses')
+    op.drop_table('group_members')
     op.drop_table('groups')
     op.drop_table('budgets')
     op.drop_table('users')
