@@ -1,4 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
+from datetime import datetime
 
 class Expense(db.Model):
     __tablename__ = 'expenses'
@@ -7,12 +8,12 @@ class Expense(db.Model):
         __table_args__ = {'schema': SCHEMA}
         
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Numeric(4, 2), nullable=False)
+    amount = db.Column(db.Numeric, nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("groups.id")), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String)
-    created_at = db.Column(db.DateTime)
+    created_at = db.Column(db.DateTime, default=datetime.now())
     
     creator = db.relationship('User', back_populates='expenses')
     group = db.relationship('Group', back_populates='expenses')

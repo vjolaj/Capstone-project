@@ -9,7 +9,7 @@ class Budget(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     category = db.Column(db.String, nullable=False)
-    amount = db.Column(db.Numeric(4, 2), nullable=False)
+    amount = db.Column(db.Numeric, nullable=False)
     within_budget = db.Column(db.Boolean)
 
     
