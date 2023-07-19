@@ -7,7 +7,7 @@ import './LoginForm.css';
 function LoginFormPage() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
   const history = useHistory()
@@ -16,17 +16,20 @@ function LoginFormPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await dispatch(login(email, password));
+    const data = await dispatch(login(username, password));
     if (data) {
       setErrors(data);
+    }
+    else {
+      history.push("/dashboard")
     }
   };
 
   const demoUser = async (e) => {
     e.preventDefault()
-    let email = "demo@aa.io"
+    let username = "demo"
     let password = "password"
-    const data = await dispatch(login(email, password));
+    const data = await dispatch(login(username, password));
     if (data) {
       setErrors(data);
     } else {
@@ -44,11 +47,11 @@ function LoginFormPage() {
           ))}
         </ul>
         <label>
-          Email address
+          Username
           <input
             type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </label>
