@@ -37,6 +37,9 @@ function AddExpenseModal({ group }) {
     if (isNaN(amount)) {
       errorsObject.amount = "Amount must be a numeric value";
     }
+    if (amount < 0) {
+      errorsObject.amount = "Amount must be a positive value";
+    }
     if (description.length > 255) {
       errorsObject.description =
         "Description can't be longer than 255 characters.";
