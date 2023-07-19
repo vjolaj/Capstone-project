@@ -5,7 +5,7 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_expenses():
     expense1 = Expense(
-        amount=30, creator_id=2, group_id=1, description='Lyft to the Louvre', category='Transportation', created_at=)
+        amount=30, creator_id=2, group_id=1, description='Lyft to the Louvre', category='Transportation')
     expense2 = Expense(
         amount=33, creator_id=2, group_id=1, description='Breakfast', category='Food')
     expense3 = Expense(
