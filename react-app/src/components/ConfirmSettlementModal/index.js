@@ -52,7 +52,7 @@ function ConfirmSettlementModal({ settlement, group }) {
       <div className="deleteText">
         <h1 className="h1Delete">Confirm Payment</h1>
         <p className="pDelete">
-          Please confirm your payment of ${settlement.amount} to{" "}
+          Please confirm your payment of ${parseFloat(settlement.amount).toFixed(2)} to{" "}
           {settlement.payee_username}.
         </p>
       </div>

@@ -45,7 +45,7 @@ function EditExpenseModal({ expense, group }) {
 
   useEffect(() => {
     if (expense) {
-      setAmount(expense.amount || "");
+      setAmount(parseFloat(expense.amount).toFixed(2) || "");
       setDescription(expense.description || "");
       setExpenseCategory(expense.category || "");
     }

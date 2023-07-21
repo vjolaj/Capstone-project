@@ -1,0 +1,93 @@
+:root {
+    --c1: white;
+    --o: rgb(28,143,249);
+    --olp: rgba(28, 142, 249, 0.845);
+    --t: rgb(31,194,159);
+    --tlp: rgba(31, 194, 159, 0.829);
+    
+    --left-color: var(--c1);
+    --right-color: var(--o);
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .side {
+    display: grid;
+    height: 100vh;
+    overflow: hidden;
+    place-items: center;
+    position: absolute;
+    width: 100%;
+  }
+  
+  .side .title {
+    /* font-family: "Montserrat", sans-serif; */
+    font-size: 5vw;
+    font-weight: 400;
+    margin: 20px 20vw;
+    width: 60vw;
+  }
+  
+  #left-side {
+    background-color: var(--left-color);
+    width: 50%;
+    z-index: 2;
+  }
+  
+  #left-side .title {  
+    /* color: black;   */
+  }
+  
+  #left-side {
+    color: var(--right-color);
+  }
+  
+  #right-side {
+    background-color: var(--right-color);
+  }
+  
+  #right-side .title {
+    font-weight: 400;
+    color: white;
+  }
+  
+  #right-side .fancy {
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .fancy-hidden {
+    color: white;
+  }
+
+  .side:hover {
+    cursor: pointer;
+  }
+
+  .logged-out-buttons {
+    display: flex;
+    gap: 1em;
+  }
+
+  .logged-out-buttons > button {
+    background-color: var(--olp);
+    color: white;
+    padding: 1.2em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 7em
+  }
+
+  .logged-out-buttons > button:hover {
+    background-color: var(--o)
+  }
+

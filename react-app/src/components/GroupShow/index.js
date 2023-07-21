@@ -137,7 +137,7 @@ const GroupShow = () => {
             {Object.entries(groupBalances).map(([key, value]) => (
               <div key={key}>
                 {key}
-                {value > 0 ? ` is owed $${value}` : ` owes $${Math.abs(value)}`}
+                {value > 0 ? ` is owed $${parseFloat(value).toFixed(2)}` : ` owes $${Math.abs(parseFloat(value).toFixed(2))}`}
               </div>
             ))}
           </div>
@@ -152,7 +152,7 @@ const GroupShow = () => {
                 <div>
                   {Object.values(groupSettlement).map((settlement) => (
                     <div key={settlement.id}>
-                      You owe {settlement.payee_username} ${settlement.amount}
+                      You owe {settlement.payee_username} ${parseFloat(settlement.amount).toFixed(2)}
                       <div>
                         <OpenModalButton
                           buttonText="Confirm Settlement"
@@ -179,7 +179,7 @@ const GroupShow = () => {
                   <div>Expense Category: {expense.category}</div>
                   <div>Expense description: {expense.description}</div>
                   <div>
-                    {expense.creator_name} posted a ${expense.amount} expense on{" "}
+                    {expense.creator_name} posted a ${parseFloat(expense.amount).toFixed(2)} expense on{" "}
                     {expense.created_at}
                   </div>
                   {current_user && current_user.id === expense.creator_id && (

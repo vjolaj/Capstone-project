@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { signUp } from "../../store/session";
 import "./SignupForm.css";
+import signUpImg from '../../assets/sign-up-splitzies.png'
+
 
 function SignupFormPage() {
   const dispatch = useDispatch();
@@ -53,14 +55,16 @@ function SignupFormPage() {
 
   return (
     <>
-      <h1>Sign Up</h1>
+    <div className="signUp-container">
+    <div className='signUp-form'>
+      <h1 className="sign-up-heading"> Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <ul>
           {errors.map((error, idx) => (
             <li key={idx}>{error}</li>
           ))}
         </ul>
-        <p>Join Splitzies Today</p>
+        <div className="signUp-form-text">Join Splitzies today and simplify your shared expenses.</div>
         {errors.firstName && <p className="signError">{errors.firstName}</p>}
         {errors.lastName && <p className="signError">{errors.lastName}</p>}
         {errors.username && <p className="signError">{errors.username}</p>}
@@ -69,7 +73,7 @@ function SignupFormPage() {
         {errors.confirmPassword && (
           <p className="signError">{errors.confirmPassword}</p>
         )}
-        <label>
+        <div>
           <input
             type="text"
             value={firstName}
@@ -78,8 +82,8 @@ function SignupFormPage() {
             placeholder="First Name"
             className="input"
           />
-        </label>
-        <label>
+        </div>
+        <div>
           <input
             type="text"
             value={lastName}
@@ -88,8 +92,8 @@ function SignupFormPage() {
             placeholder="Last Name"
             className="input"
           />
-        </label>
-        <label>
+        </div>
+        <div>
           <input
             type="text"
             value={email}
@@ -97,8 +101,8 @@ function SignupFormPage() {
             placeholder="Email"
             required
           />
-        </label>
-        <label>
+        </div>
+        <div>
           <input
             type="text"
             value={username}
@@ -106,8 +110,8 @@ function SignupFormPage() {
             placeholder="Username"
             required
           />
-        </label>
-        <label>
+        </div>
+        <div>
           <input
             type="password"
             value={password}
@@ -115,8 +119,8 @@ function SignupFormPage() {
             placeholder="Password"
             required
           />
-        </label>
-        <label>
+        </div>
+        <div>
           <input
             type="password"
             value={confirmPassword}
@@ -124,9 +128,16 @@ function SignupFormPage() {
             placeholder="Confirm Password"
             required
           />
-        </label>
-        <button type="submit">Sign Up</button>
+        </div>
+        <button className="signUpButton" type="submit">Sign Up</button>
       </form>
+      </div>
+      <img
+        className="sign-up-img"
+        src={signUpImg}
+        alt="Sign Up Splitzies Illustration"
+      />
+      </div>
     </>
   );
 }
