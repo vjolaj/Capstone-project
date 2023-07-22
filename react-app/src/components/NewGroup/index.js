@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./NewGroup.css";
 import { createGroupThunk } from "../../store/groups";
+import { getAllGroupsThunk } from "../../store/groups";
 
-
-export default function NewGroup() {
+export default function NewGroup({ setCurrentView }) {
     const sessionUser = useSelector((state) => state.session.user);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -63,8 +63,9 @@ export default function NewGroup() {
     }
     setValidationErrors({})
       const newGroup = await dispatch(createGroupThunk(formData))
-      // dispatch(getAllGroupsThunk());
-      history.push(`/dashboard`)
+      dispatch(getAllGroupsThunk());
+      history.push(`/dashboard`);
+      setCurrentView('dashboard');
     };
   
     return (
@@ -76,9 +77,9 @@ export default function NewGroup() {
                   <li key={idx}>{error}</li>
                 ))}
               </ul> */}
-            <h2 className="formHeading">Add a new group</h2>
-            <h4>FYI: you cannot delete a group if there are unsettled balances in the group.</h4>
-            <div className="individualFormContainer">
+            <div className="formHeading">Add a new group</div>
+            <div className="warning">FYI: you cannot delete a group if there are unsettled balances in the group.</div>
+            <div className="longerFormContainer">
               Enter a name for your group
               <input
                 type="text"
@@ -92,7 +93,7 @@ export default function NewGroup() {
             </div>
             
             <div className="longerFormContainer">
-              Please enter a description for group.
+              Enter a description for your group.
               <input
                 type="text"
                 value={description}
@@ -105,7 +106,7 @@ export default function NewGroup() {
             </div>
             <div className="form-input-box">
               <div
-                className="imageInputContainer longerFormContainer"
+                className="imageInputContainer"
                 htmlFor="image"
               >
                 Post an image for your group.
@@ -119,9 +120,11 @@ export default function NewGroup() {
   
               </div>
             </div>
+            <div className="submit-container">
             <button type="submit" className="submit-form-button">
               Add your Group
             </button>
+            </div>
           </form>
         </div>
       </>

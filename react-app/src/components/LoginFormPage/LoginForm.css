@@ -89,3 +89,11 @@
     margin-top: 1em;
     color: rgb(154, 154, 154);
   }
+
+  .signError {
+    color: rgb(204, 1, 1);
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1em;
+    flex-direction: column;
+  }

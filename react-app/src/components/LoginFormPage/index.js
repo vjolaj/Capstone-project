@@ -48,11 +48,11 @@ function LoginFormPage() {
       <div className='login-form'>
       <h1 className="log-in-heading">Log In to Splitzies</h1>
       <form onSubmit={handleSubmit}>
-        <ul>
+        <div className="signError">
           {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
+            <div key={idx}>{error}</div>
           ))}
-        </ul>
+        </div>
         <div className="inputContainer">
           <input
             type="text"

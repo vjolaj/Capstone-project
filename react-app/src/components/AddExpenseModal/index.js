@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useModal } from "../../context/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { createExpenseThunk } from "../../store/expenses";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
@@ -11,7 +10,6 @@ import { getAllGroupBalancesThunk } from "../../store/settlements";
 function AddExpenseModal({ group }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const history = useHistory();
   const sessionUser = useSelector((state) => state.session.user);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
@@ -60,11 +58,6 @@ function AddExpenseModal({ group }) {
       expenseCategory,
       description,
     };
-    // const formData = new FormData();
-    // formData.append("amount", amount);
-    // formData.append("imageUrl", image);
-    // formData.append("description", description);
-    // formData.append("category", expenseCategory);
     // aws uploads can be a bit slow—displaying
     // some sort of loading message is a good idea
     // setImageLoading(true);
@@ -78,7 +71,6 @@ function AddExpenseModal({ group }) {
       dispatch(getAllGroupExpensesRoutes(group.id));
       dispatch(getAllGroupBalancesThunk(group.id));
       dispatch(getGroupSettlementThunk(group.id));
-      history.push(`/groups/${group.id}`);
     });
   };
 

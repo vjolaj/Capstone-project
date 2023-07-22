@@ -4,7 +4,7 @@ import { deleteGroupThunk, getAllGroupsThunk } from "../../store/groups";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-function DeleteGroupModal({ group }) {
+function DeleteGroupModal({ group, setCurrentView }) {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -17,7 +17,8 @@ function DeleteGroupModal({ group }) {
       .then(() => {
           closeModal();
           dispatch(getAllGroupsThunk());
-          history.push(`/dashboard`)
+          history.push(`/dashboard`);
+          setCurrentView('dashboard')
       })
     };
   
@@ -43,7 +44,6 @@ function DeleteGroupModal({ group }) {
                 onClick={((e) => {
                   closeModal();
                   e.stopPropagation();
-                  history.push(`/groups/${group.id}`)
                   })}
                 >
                     No (Keep Group)

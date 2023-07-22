@@ -44,7 +44,7 @@ function AddMemberModal({ group, users }) {
       dispatch(getAllGroupExpensesRoutes(group.id));
       dispatch(getAllGroupBalancesThunk(group.id));
       dispatch(getGroupSettlementThunk(group.id));
-      history.push(`/groups/${group.id}`);
+      // history.push(`/groups/${group.id}`);
     });
   };
 

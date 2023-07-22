@@ -30,4 +30,50 @@ button:hover {
 
 .logo-img {
   height: 2.5em;
+  margin-left: 1em;
+}
+
+.logged-in-logo-img {
+  height: 2.5em;
+  margin-left: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.nav-bar-logged-in {
+  background-color: rgb(28,143,249);
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+}
+
+.logged-in-buttons {
+  display: flex;
+  align-content: center;
+  margin-top: 0.7em;
+  gap: 1em;
+  margin-right: 1em;
+}
+
+.menuLogOutButton {
+  background-color: rgba(245, 245, 245, 0.108);
+  color: white;
+  padding: 1.2em;
+  border-radius: 1.8em;
+  border-color: none;
+  box-shadow: none;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+  font-weight: 700;
+  border: 1px solid rgba(212, 212, 212, 0.458);
+  width: 7em
+}
+
+.menuLogOutButton:hover {
+  background-color: rgba(245, 245, 245, 0.289);
+}
+
+.hello-text {
+  color: white;
+  margin-top: 1em;
+  font-weight: 700;
 }

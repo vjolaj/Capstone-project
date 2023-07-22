@@ -43,7 +43,6 @@ function ConfirmSettlementModal({ settlement, group }) {
       dispatch(getAllGroupExpensesRoutes(group.id));
       dispatch(getAllGroupBalancesThunk(group.id));
       dispatch(getGroupSettlementThunk(group.id));
-      history.push(`/groups/${group.id}`);
     });
   };
 
@@ -83,7 +82,6 @@ function ConfirmSettlementModal({ settlement, group }) {
           onClick={(e) => {
             closeModal();
             e.stopPropagation();
-            history.push(`/groups/${group.id}`);
           }}
         >
           No, take me back

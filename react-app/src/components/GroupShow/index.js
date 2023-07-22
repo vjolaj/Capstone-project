@@ -23,8 +23,8 @@ import AddExpenseModal from "../AddExpenseModal";
 import EditExpenseModal from "../EditExpenseModal";
 import ConfirmSettlementModal from "../ConfirmSettlementModal";
 
-const GroupShow = () => {
-  const { groupId } = useParams();
+const GroupShow = ({groupId, setCurrentView }) => {
+  // const { groupId } = useParams();
   const dispatch = useDispatch();
   const current_user = useSelector((state) => state.session.user);
   const [editMode, setEditMode] = useState(false);
@@ -78,7 +78,6 @@ const GroupShow = () => {
     dispatch(editGroupThunk(description, group.id)).then(() => {
       setEditMode(false);
       dispatch(getAllGroupsThunk());
-      history.push(`/groups/${group.id}`);
     });
   };
 
@@ -89,7 +88,7 @@ const GroupShow = () => {
   return (
     <div>
       <div>
-        <h3>Group:</h3>
+        {/* <h3>Group:</h3> */}
         <div>
           <img className="groupImage" src={group.imageUrl} alt="img" />
           {current_user.id == group.creator_id &&
@@ -97,7 +96,7 @@ const GroupShow = () => {
               <div>
                 <OpenModalButton
                   buttonText="Delete Group"
-                  modalComponent={<DeleteGroupModal group={group} />}
+                  modalComponent={<DeleteGroupModal group={group} setCurrentView={setCurrentView} />}
                 />
               </div>
             )}
@@ -133,7 +132,7 @@ const GroupShow = () => {
             <div>Group description: {group.description}</div>
           )}
           <div>
-            <h4>Group Balances</h4>
+            <div>Group Balances</div>
             {Object.entries(groupBalances).map(([key, value]) => (
               <div key={key}>
                 {key}
@@ -145,7 +144,7 @@ const GroupShow = () => {
             <div>You are settled up in this group</div>
           ) : (
             <div>
-              <h4>In order to get you settled up in this group:</h4>
+              <div>In order to get you settled up in this group:</div>
               {groupBalances[current_user.username] > 0 ? (
                 <div>You must wait for payments from members</div>
               ) : (
@@ -172,7 +171,7 @@ const GroupShow = () => {
           )}
 
           <div>
-            <h4>Group Expenses:</h4>
+            <div>Group Expenses:</div>
             {Object.values(groupExpenses)
               .map((expense) => (
                 <div key={expense.id}>
@@ -197,13 +196,14 @@ const GroupShow = () => {
               .reverse()}
           </div>
           <div>
-            <OpenModalButton
+            {group.members.length > 1 ? <OpenModalButton
               buttonText="Add an Expense"
               modalComponent={<AddExpenseModal group={group} />}
-            />
+            /> : 
+            <div>You can start adding expenses once you add at least one member to your group.</div>}
           </div>
           <div>
-            <h4>Group Members</h4>
+            <div>Group Members</div>
             {group.members.map((member) => (
               <div key={member.id}>
                 <div>{member}</div>

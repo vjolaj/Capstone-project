@@ -4,8 +4,7 @@ import { NavLink, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
-import splitziesFullOrangeImage from "../../assets/SPLITZIES_FULL_ORANGE.png";
-import splitziesFullGreenImage from "../../assets/SPLITZIES_Full.png";
+import splitziesFullPurpleImage from "../../assets/SPLITZIES_FULL_PURPLE.png";
 import splitziesFullBlueImage from '../../assets/Splitzies_Full_Blue.png'
 import { logout } from "../../store/session";
 
@@ -29,12 +28,14 @@ function Navigation({ isLoaded }) {
     dispatch(logout());
     history.push("/");
   };
+
   let sessionLinks;
+
   if (sessionUser) {
     sessionLinks = (
       <div className="logged-in-buttons">
-        <div> Hello {sessionUser.username} </div>
-        <button onClick={handleLogout}>Log Out</button>
+        <div className="hello-text"> Hello {sessionUser.username} </div>
+        <button className='menuLogOutButton' onClick={handleLogout}>Log Out</button>
       </div>
     );
   } else {
@@ -49,16 +50,19 @@ function Navigation({ isLoaded }) {
       </div>
     );
   }
+
+  const navClassName = sessionUser ? "nav-bar-logged-in" : "nav-bar";
+
   return (
     <>
-      <div className="nav-bar">
+      <div className={navClassName}>
         <div>
           {sessionUser ? (
             <NavLink exact to="/dashboard">
               <img
-                className="logo-img"
-                src={splitziesFullGreenImage}
-                alt="Splitzies Green Logo"
+                className="logged-in-logo-img"
+                src={splitziesFullPurpleImage}
+                alt="Splitzies Purple Logo"
               />
             </NavLink>
           ) : (
