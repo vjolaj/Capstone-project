@@ -3,6 +3,7 @@ import { useModal } from "../../context/Modal";
 import { deleteGroupThunk, getAllGroupsThunk } from "../../store/groups";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import './DeleteGroupModal.css'
 
 function DeleteGroupModal({ group, setCurrentView }) {
     const { closeModal } = useModal();
@@ -25,21 +26,17 @@ function DeleteGroupModal({ group, setCurrentView }) {
   
     return (
         <div className="mainContainer">
-            <div className="deleteText">
-            <h1 className="h1Delete">Confirm Delete</h1>
-            <p className="pDelete">Are you sure you want to delete this group?</p>  
-            </div>
+            <div className="deleteHeader">Confirm Delete</div>
+            <p className="deleteText">Are you sure you want to delete this group?</p>  
         
             <div className="YN">
                 <button
-                className="Ybutton"
                 id="yesDelete"
                 onClick={handleSubmit}
                 >
                     Yes (Delete Group)
                 </button>
                 <button
-                className="Nbutton"
                 id="noDelete"
                 onClick={((e) => {
                   closeModal();

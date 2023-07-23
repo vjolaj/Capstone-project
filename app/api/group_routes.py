@@ -140,6 +140,7 @@ def delete_group(groupId):
     """
     group_to_delete = Group.query.get(groupId)
     per_member_balances = get_consolidated_balances(groupId)
+
     for value in per_member_balances.values():
         if float(value) != 0:
             return {'error': "You can't delete group if there are unsettled balances."}

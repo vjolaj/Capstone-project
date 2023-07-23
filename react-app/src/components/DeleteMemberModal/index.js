@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { getAllGroupBalancesThunk } from "../../store/settlements";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { getGroupSettlementThunk } from "../../store/settlements";
+import './DeleteMemberModal.css'
 
 function DeleteMemberModal({ group, member }) {
     const { closeModal } = useModal();
@@ -29,26 +30,22 @@ function DeleteMemberModal({ group, member }) {
   
     return (
         <div className="mainContainer">
-            <div className="deleteText">
-            <h1 className="h1Delete">Confirm Delete</h1>
-            <p className="pDelete">Are you sure you want to remove this member ?</p>  
-            </div>
+            <h1 className="deleteHeader">Confirm Delete</h1>
+            <p className="deleteText">Are you sure you want to remove this member ?</p>  
         
             <div className="YN">
                 <button
-                className="Ybutton"
-                id="yesDelete"
+                id="yes-member-delete"
                 onClick={handleSubmit}
                 >
                     Yes (Remove Member)
                 </button>
                 <button
-                className="Nbutton"
-                id="noDelete"
+                id="no-member-delete"
                 onClick={((e) => {
                   closeModal();
                   e.stopPropagation();
-                  history.push(`/groups/${group.id}`)
+                //   history.push(`/groups/${group.id}`)
                   })}
                 >
                     No (Keep Member)

@@ -12,11 +12,11 @@ class Group(db.Model):
     imageUrl = db.Column(db.String(255), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False )
     
-    expenses = db.relationship('Expense', back_populates='group')
+    expenses = db.relationship('Expense', back_populates='group', cascade='all, delete-orphan')
     group_members = db.relationship('GroupMember', back_populates='group', cascade='all, delete-orphan')
     creator = db.relationship('User', back_populates='created_groups')
-    settlement_transactions = db.relationship('SettlementTransaction', back_populates='group', foreign_keys='SettlementTransaction.group_id')
-    settled_payments = db.relationship('Payment', back_populates='payment_group', foreign_keys='Payment.group_id')
+    settlement_transactions = db.relationship('SettlementTransaction', back_populates='group', foreign_keys='SettlementTransaction.group_id', cascade='all, delete-orphan')
+    settled_payments = db.relationship('Payment', back_populates='payment_group', foreign_keys='Payment.group_id', cascade='all, delete-orphan')
     def to_dict(self):
         members = [member.user.username for member in self.group_members]
         return {

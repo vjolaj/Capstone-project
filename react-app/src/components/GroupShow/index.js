@@ -212,7 +212,7 @@ const getExpenseCategoryIcon = (category) => {
             <div className="balances-text">Group Balances</div>
             <div className='balances'>
             {Object.entries(groupBalances).map(([key, value]) => (
-              <div className={value > 0 ? "is-owed" : "owes"} key={key}>
+              <div className={value >= 0 ? "is-owed" : "owes"} key={key}>
                 {key}
                 {value > 0
                   ? ` is owed $${parseFloat(value).toFixed(2)}`
