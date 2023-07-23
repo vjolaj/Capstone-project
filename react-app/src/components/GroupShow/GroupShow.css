@@ -4,3 +4,273 @@
     object-fit: cover;
     margin-top: 1em;
 }
+
+.group-info-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-description-button {
+    background-color: #97d0fe;
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 20%;
+}
+
+.edit-description-button:hover {
+    background-color: #87c8fe
+}
+
+.edit-description-container input{
+    width: 200%;
+    margin-top: 10px;
+    background-color: #c4ebfc23;
+    border: none;
+    padding: 1em;
+    border-bottom: 1px solid #97CFFE;
+    width: 100%;
+    margin-bottom: 1em;
+}
+.group-description {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5em;
+}
+
+.edit-member {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    /* justify-content: space-between; */
+}
+
+.remove-member button{
+    padding: 0.1em;
+    border-radius: 100px;
+    background-color: transparent;
+    border: none;
+}
+
+.members-container {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 1em;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+.members {
+    display: flex;
+    gap: 1em;
+}
+
+.group-name {
+    font-size: 1.5rem;
+    margin-top: 0.5em;
+}
+
+.member {
+    background-color: #8ea8fec3;
+    border-radius:20px;
+    display: flex;
+    gap: 0.5em;
+    padding: 0.4em;
+    border: 1px solid rgb(212, 212, 212);
+}
+
+.edit-group-buttons {
+    display: flex;
+    gap: 1em;
+    margin-top: 0.5em;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5em;
+}
+
+.delete-group-button button {
+    background-color: #97d0fe;
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 12.5em;
+}
+.delete-group-button button:hover {
+    background-color: #87c8fe
+} 
+
+.add-member button {
+    background-color: #8ea8fec3;
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 12.5em;
+}
+.add-member button:hover {
+    background-color: #8EA9FE
+} 
+
+.balances-text {
+    font-size: 1.3rem;
+    margin-bottom: 0.5em;
+}
+
+.balances {
+    display: flex;
+    gap: 0.3em;
+    flex-direction: column;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+.is-owed {
+    border-left: 3px solid #1BC29F;
+    padding-left: 5px;
+    margin-bottom: 10px
+}
+
+.owes {
+    border-left: 3px solid #fa5f05;
+    padding-left: 5px;
+    margin-bottom: 10px
+}
+
+.settled-message {
+    font-size: 1rem;
+    margin: auto;
+}
+
+.fa-square-check {
+    margin-right: 0.5em;
+    color: #1BC29F;
+    font-weight: bold;
+}
+
+.fa-right-left {
+    margin-right: 0.5em;
+    color: #fa5f05;
+    font-weight: bold;
+}
+
+.you-owe-message {
+    margin-top: 0.5em;
+    /* margin-bottom: 0.5em; */
+    margin-left: 1.5em;
+
+}
+
+.settlement-div {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 1em;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wait-payment-message {
+    margin-top: 0.5em;
+    margin-left: 1.5em;
+}
+
+.confirm-settlement-button button {
+    background-color: #fa5f0c75;
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 12.5em;
+}
+.confirm-settlement-button button:hover {
+    background-color: #fa5f0c95
+} 
+
+.individual-expense {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 1em;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #fa5f0c36
+}
+
+.edit-expense-button button {
+    background-color: #fa5f0c75;
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 12.5em;
+}
+
+.edit-expense-button button:hover {
+    background-color: #fa5f0c95
+}
+
+.expenses-text {
+    font-size: 1.3rem;
+    margin-bottom: 0.5em;
+}
+
+.expense-small-container {
+    display: flex;
+    align-items: center;
+}
+
+.expense-category {
+    margin-right: 0.5em;
+    font-size: 1.8em;
+    color: #fa5f05;
+}
+
+.expenses-add-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8em;
+}
+
+.add-expense-button button {
+    background-color: #97d0fe;
+    color: white;
+    padding: 0.5em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 12.5em;
+}
+
+.add-expense-button button:hover {
+    background-color: #87c8fe
+}

@@ -82,7 +82,7 @@ const UserDashboard = () => {
               <img className="imageOverlay" src={group.imageUrl} alt="Group Image" />
               <div className="group-info">
               <div>{group.group_name}</div>
-              <div>{group.description}</div>
+              {/* <div>{group.description}</div> */}
               <div className="group-members">
                 {group.members.map((member) => (
                   <div key={member.id}>
