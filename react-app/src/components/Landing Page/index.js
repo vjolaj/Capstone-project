@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import "./LandingPage.css";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function LandingPage() {
   const history = useHistory();
+  const sessionUser = useSelector((state) => state.session.user);
+
 
   const loginButton = (e) => {
     e.preventDefault();
@@ -17,7 +20,6 @@ export default function LandingPage() {
 
   useEffect (() => {
       const left = document.getElementById("left-side");
-    //   const splitPanel = document.getElementsByClassName("split-panel")
       
       const handleMove = (e) => {
         left.style.width = `${(e.clientX / window.innerWidth) * 100}%`;
@@ -28,8 +30,18 @@ export default function LandingPage() {
       document.ontouchmove = (e) => handleMove(e.touches[0]);
   })
 
+  const handleClick = (e) => {
+    if (sessionUser) {
+      e.preventDefault();
+      history.push('/dashboard')
+    } else {
+      e.preventDefault();
+      history.push('/login')
+    }
+  }
+
   return (
-    <div onClick={loginButton} className='split-panel' >
+    <div onClick={handleClick} className='split-panel' >
       <div id="left-side" className="side">
         <h2 className="title">
           Splitting bills doesn't have to be hard.

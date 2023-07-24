@@ -29,12 +29,6 @@ function App() {
           <Route exact path="/signup">
             <SignupFormPage />
           </Route>
-          {/* <Route exact path='/groups/new'>
-              <NewGroup/>
-          </Route>
-          <Route exact path='/groups/:groupId'>
-              <GroupShow/>
-          </Route> */}
           <Route exact path='/dashboard'>
               <Dashboard/>
           </Route>
