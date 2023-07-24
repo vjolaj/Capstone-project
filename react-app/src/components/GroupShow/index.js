@@ -220,7 +220,7 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                   {key}
                   {value > 0
                     ? ` is owed $${parseFloat(value).toFixed(2)}`
-                    : ` owes $${Math.abs(parseFloat(value).toFixed(2))}`}
+                    : ` owes $${parseFloat(Math.abs(value)).toFixed(2)}`}
                 </div>
               ))}
               {Math.abs(groupBalances[current_user.username]) <= 0.01 ? (
