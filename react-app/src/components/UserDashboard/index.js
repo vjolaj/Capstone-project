@@ -53,7 +53,7 @@ const UserDashboard = () => {
             <div key={payment.id}>
               <div className="payment-received-div">
               <i className="fa-solid fa-hand-holding-dollar payment-icon"></i>
-                {payment.payer_username} made a ${payment.amount}{" "}
+                {payment.payer_username} made a ${parseFloat(payment.amount).toFixed(2)}{" "}
                 {payment.method} payment to you on {convertDate(payment.paid_at)}.
               </div>
             </div>
@@ -67,7 +67,7 @@ const UserDashboard = () => {
             <div key={payment.id}>
               <div className="payment-made-div">
                 <i className="fa-solid fa-dollar-sign payment-icon" ></i>
-                You made a ${payment.amount} {payment.method} payment to{" "}
+                You made a ${parseFloat(payment.amount).toFixed(2)} {payment.method} payment to{" "}
                 {payment.payee_username} on {convertDate(payment.paid_at)}.
               </div>
             </div>

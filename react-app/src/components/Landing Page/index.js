@@ -3,7 +3,7 @@ import "./LandingPage.css";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function LandingPage() {
+export default function LandingPage({isLoaded}) {
   const history = useHistory();
   const sessionUser = useSelector((state) => state.session.user);
 

@@ -84,13 +84,13 @@
     display: flex;
     filter: drop drop-shadow(0 0 6rem white);
     position: absolute;
-    bottom: 100px;
+    bottom: 140px;
 
 }
 
 .info-container {
     /* max-height: 100vh; */
-    overflow: auto; 
+    /* overflow: auto;  */
     margin-left: 280px;
     margin-top: 5em;
     /* margin-left: -25em; */ 
