@@ -76,7 +76,8 @@ const UserDashboard = () => {
       </div>
       <div>
         <div className="user-dashboard-text">Groups you are a part of:</div>
-        <ul className="groups-list">
+        {Object.values(groups) == 0 ?
+        <div>No groups, yet!</div> : <ul className="groups-list">
         {Object.values(groups).map((group) => (
           <li className='individual-Group-Img' key={group.id}>
               <img className="imageOverlay" src={group.imageUrl} alt="Group Image" />
@@ -93,7 +94,7 @@ const UserDashboard = () => {
               </div>
           </li>
         ))}
-        </ul>
+        </ul>}
       </div>
     </>
   );

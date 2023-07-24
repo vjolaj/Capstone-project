@@ -25,10 +25,10 @@ def get_amounts_expended_per_member(group_id):
 
 def any_balance_nonzero(consolidated_balances):
     """
-    If there are any non zero balances return False
+    If there are any balances more than 0.01 (floating point problem) return False
     """
     for member in consolidated_balances:
-        if round(consolidated_balances[member],2) != 0.:
+        if abs(round(consolidated_balances[member],2)) > 0.001:
             return True
     return False
 
@@ -44,7 +44,7 @@ def get_settled_amount_for_member(group_id, user_id, is_payer):
         # settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payee_id=user_id).filter_by(is_settled=True).all()
     return sum([settlement.amount for settlement in settlements])
 
-
+    
 
 ######## MAIN LOGIC #########
 
@@ -63,14 +63,18 @@ def get_consolidated_balances(group_id):
     # now calculate the difference between total spent per member and average expenses
     # also take into account the settlements in the group
     amounts_outstanding = {}
-    for member in group_members:
+    # total_amount_accounted_decimal = 0
+    for i, member in enumerate(group_members):
         # user = User.query.get(member)
         amount_expended_by_member = amounts_expended_per_member.get(member, 0)
         settlements_received_by_member = get_settled_amount_for_member(group_id, member, is_payer=False)
         settlements_paid_by_member = get_settled_amount_for_member(group_id, member, is_payer=True)
         
         amount_outstanding = amount_expended_by_member + settlements_paid_by_member - amount_owed_per_member_for_expenses - settlements_received_by_member
-        amounts_outstanding[member] = amount_outstanding
+        # total_amount_accounted_decimal += amount_outstanding
+        # if i == len(group_members) -1 and total_amount_accounted_decimal != total:
+        #     amount_outstanding += get_decimal_adjustment()
+        amounts_outstanding[member] = amount_outstanding# if amount_outstanding > 0.01 else 0
     
     return amounts_outstanding
 
@@ -89,7 +93,13 @@ def update_settlement_transactions(group_id):
     
     # settlements_dict = defaultdict(dict)
     settlement_transactions = []
+    i = 0
     while any_balance_nonzero(consolidated_balances):
+        print("🥳")
+        print(consolidated_balances)
+        if i == 10:
+            raise Exception("now we stop")
+        i += 1
         # we want to use the maximum positive and negative balances for the transactions
         max_positive_balance_user = max(consolidated_balances, key = lambda x: consolidated_balances[x])
         max_negative_balance_user = min(consolidated_balances, key = lambda x: consolidated_balances[x])

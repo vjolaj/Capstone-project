@@ -116,7 +116,7 @@ const GroupShow = ({ groupId, setCurrentView }) => {
               <div className="group-name">{group.group_name}</div>
               {current_user.id == group.creator_id &&
                 Object.values(groupBalances).every(
-                  (balance) => balance == 0
+                  (balance) => balance <= 0.01
                 ) && (
                   <div className="delete-group-button">
                     <OpenModalButton
@@ -223,7 +223,7 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                     : ` owes $${Math.abs(parseFloat(value).toFixed(2))}`}
                 </div>
               ))}
-              {groupBalances[current_user.username] === 0 ? (
+              {Math.abs(groupBalances[current_user.username]) <= 0.01 ? (
                 <div className="settled-message">
                   {" "}
                   <i class="fa-regular fa-square-check"></i>You are settled up
@@ -235,7 +235,7 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                     <i class="fa-solid fa-right-left"></i>In order to get you
                     settled up in this group:
                   </div>
-                  {groupBalances[current_user.username] > 0 ? (
+                  {groupBalances[current_user.username] > 0.01 ? (
                     <div className="wait-payment-message">
                       You must wait for payments from members
                     </div>

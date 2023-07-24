@@ -7,6 +7,7 @@ from app.models import Group, db, User, GroupMember
 from app.forms import GroupForm, MembersForm
 from .auth_routes import validation_errors_to_error_messages
 from .AWS_helpers import get_unique_filename, upload_file_to_s3, remove_file_from_s3
+from app.api.expense_logic import update_settlement_transactions
 
 group_routes = Blueprint("groups", __name__)
 
@@ -88,11 +89,10 @@ def remove_members(groupId):
     This route will remove a group member from its group.
     """
     group = Group.query.get(groupId)
-    per_member_balances = get_consolidated_balances(groupId)
-    for value in per_member_balances.values():
-        if float(value) != 0:
-            return {'error': "You can't remove members if there are unsettled balances."}
-
+    groupExpenses = Expense.query.filter_by(group_id=groupId).all()
+    if groupExpenses:
+        return {'error': "You can't remove members once expenses are recorded on the group."}, 403
+    
     form = MembersForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     
@@ -111,6 +111,7 @@ def remove_members(groupId):
             return {"error": "Group member does not exist"}, 404
 
         db.session.delete(groupmember)
+        # update_settlement_transactions(groupId)
         db.session.commit()
         return {'message': 'Group member successfully deleted'}, 200
 
@@ -142,8 +143,8 @@ def delete_group(groupId):
     per_member_balances = get_consolidated_balances(groupId)
 
     for value in per_member_balances.values():
-        if float(value) != 0:
-            return {'error': "You can't delete group if there are unsettled balances."}
+        if abs(round(value, 2)) > 0.01:
+            return {'error': f"You can't delete group if there are unsettled balances."}, 401
     if current_user.id != group_to_delete.creator_id:
         return {'error': 'unathorized access'}, 403
     db.session.delete(group_to_delete)
