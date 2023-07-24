@@ -84,22 +84,22 @@ const GroupShow = ({ groupId, setCurrentView }) => {
   };
 
   const convertDate = (date) => {
-    const newDate = new Date(date)
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const convertedDate = newDate.toLocaleString('en-US', options);
-    return convertedDate
-}
+    const newDate = new Date(date);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    const convertedDate = newDate.toLocaleString("en-US", options);
+    return convertedDate;
+  };
 
-const getExpenseCategoryIcon = (category) => {
-  const iconMap = {
-    Transportation: <i class="fa-solid fa-car"></i>,
-    Housing: <i class="fa-solid fa-house"></i>,
-    Utilities: <i class="fa-solid fa-lightbulb"></i>,
-    Food: <i class="fa-solid fa-utensils"></i>,
-    Entertainment: <i class="fa-solid fa-ticket"></i>
-  }
-  return iconMap[category]
-}
+  const getExpenseCategoryIcon = (category) => {
+    const iconMap = {
+      Transportation: <i class="fa-solid fa-car"></i>,
+      Housing: <i class="fa-solid fa-house"></i>,
+      Utilities: <i class="fa-solid fa-lightbulb"></i>,
+      Food: <i class="fa-solid fa-utensils"></i>,
+      Entertainment: <i class="fa-solid fa-ticket"></i>,
+    };
+    return iconMap[category];
+  };
 
   if (!group) return null;
   if (!groupExpenses) return null;
@@ -113,12 +113,12 @@ const getExpenseCategoryIcon = (category) => {
           <img className="groupImage" src={group.imageUrl} alt="img" />
           <div className="group-info-container">
             <div className="name-container">
-            <div className="group-name">{group.group_name}</div>
-            {current_user.id == group.creator_id &&
+              <div className="group-name">{group.group_name}</div>
+              {current_user.id == group.creator_id &&
                 Object.values(groupBalances).every(
                   (balance) => balance == 0
                 ) && (
-                  <div className='delete-group-button'>
+                  <div className="delete-group-button">
                     <OpenModalButton
                       buttonText="Delete Group"
                       modalComponent={
@@ -173,28 +173,32 @@ const getExpenseCategoryIcon = (category) => {
             </div>
             <div className="members-container">
               <div className="members">
-              {/* <div>Members</div> */}
-              {group.members.map((member) => (
-                <div className="edit-member" key={member.id}>
-                  <div className="member">{member}
-                  {current_user &&
-                    current_user.id === group.creator_id &&
-                    current_user.username != member &&
-                    Object.values(groupBalances).every(
-                      (balance) => balance === 0
-                    ) && (
-                      <div className="remove-member">
-                        <OpenModalButton
-                          buttonText={<i class="fa-solid fa-user-minus"></i>}
-                          modalComponent={
-                            <DeleteMemberModal group={group} member={member} />
-                          }
-                        />
-                      </div>
-                    )}
+                {/* <div>Members</div> */}
+                {group.members.map((member) => (
+                  <div className="edit-member" key={member.id}>
+                    <div className="member">
+                      {member}
+                      {current_user &&
+                        current_user.id === group.creator_id &&
+                        current_user.username != member &&
+                        Object.values(groupExpenses).length === 0 && (
+                          <div className="remove-member">
+                            <OpenModalButton
+                              buttonText={
+                                <i class="fa-solid fa-user-minus"></i>
+                              }
+                              modalComponent={
+                                <DeleteMemberModal
+                                  group={group}
+                                  member={member}
+                                />
+                              }
+                            />
+                          </div>
+                        )}
                     </div>
-                </div>
-              ))}
+                  </div>
+                ))}
               </div>
               {current_user &&
                 current_user.id === group.creator_id &&
@@ -210,78 +214,92 @@ const getExpenseCategoryIcon = (category) => {
                 )}
             </div>
             <div className="balances-text">Group Balances</div>
-            <div className='balances'>
-            {Object.entries(groupBalances).map(([key, value]) => (
-              <div className={value >= 0 ? "is-owed" : "owes"} key={key}>
-                {key}
-                {value > 0
-                  ? ` is owed $${parseFloat(value).toFixed(2)}`
-                  : ` owes $${Math.abs(parseFloat(value).toFixed(2))}`}
-              </div>
-            ))}
-          {groupBalances[current_user.username] === 0 ? (
-            <div className='settled-message'> <i class="fa-regular fa-square-check"></i>You are settled up in this group - yay!</div>
-          ) : (
-            <div>
-              <div className='settled-message'><i class="fa-solid fa-right-left"></i>In order to get you settled up in this group:</div>
-              {groupBalances[current_user.username] > 0 ? (
-                <div className="wait-payment-message">You must wait for payments from members</div>
+            <div className="balances">
+              {Object.entries(groupBalances).map(([key, value]) => (
+                <div className={value >= 0 ? "is-owed" : "owes"} key={key}>
+                  {key}
+                  {value > 0
+                    ? ` is owed $${parseFloat(value).toFixed(2)}`
+                    : ` owes $${Math.abs(parseFloat(value).toFixed(2))}`}
+                </div>
+              ))}
+              {groupBalances[current_user.username] === 0 ? (
+                <div className="settled-message">
+                  {" "}
+                  <i class="fa-regular fa-square-check"></i>You are settled up
+                  in this group - yay!
+                </div>
               ) : (
                 <div>
-                  {Object.values(groupSettlement).map((settlement) => (
-                    <div className='settlement-div' key={settlement.id}>
-                      <div className='you-owe-message'>You owe {settlement.payee_username} $
-                      {parseFloat(settlement.amount).toFixed(2)}</div>
-                      <div className="confirm-settlement-button">
-                        <OpenModalButton
-                          buttonText="Confirm Settlement"
-                          modalComponent={
-                            <ConfirmSettlementModal
-                              settlement={settlement}
-                              group={group}
-                            />
-                          }
-                        />
-                      </div>
+                  <div className="settled-message">
+                    <i class="fa-solid fa-right-left"></i>In order to get you
+                    settled up in this group:
+                  </div>
+                  {groupBalances[current_user.username] > 0 ? (
+                    <div className="wait-payment-message">
+                      You must wait for payments from members
                     </div>
-                  ))}
+                  ) : (
+                    <div>
+                      {Object.values(groupSettlement).map((settlement) => (
+                        <div className="settlement-div" key={settlement.id}>
+                          <div className="you-owe-message">
+                            You owe {settlement.payee_username} $
+                            {parseFloat(settlement.amount).toFixed(2)}
+                          </div>
+                          <div className="confirm-settlement-button">
+                            <OpenModalButton
+                              buttonText="Confirm Settlement"
+                              modalComponent={
+                                <ConfirmSettlementModal
+                                  settlement={settlement}
+                                  group={group}
+                                />
+                              }
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
-          )}
             </div>
           </div>
 
           <div className="expenses-container">
             <div className="expenses-add-container">
-            <div className="expenses-text">Group Expenses:</div>
-            <div className="add-expense-button">
-            {group.members.length > 1 ? (
-              <OpenModalButton
-                buttonText="Add an Expense"
-                modalComponent={<AddExpenseModal group={group} />}
-              />
-            ) : (
-              <div>
-                You can start adding expenses once you add at least one member
-                to your group.
+              <div className="expenses-text">Group Expenses:</div>
+              <div className="add-expense-button">
+                {group.members.length > 1 ? (
+                  <OpenModalButton
+                    buttonText="Add an Expense"
+                    modalComponent={<AddExpenseModal group={group} />}
+                  />
+                ) : (
+                  <div>
+                    You can start adding expenses once you add at least one
+                    member to your group.
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          </div>
+            </div>
             {Object.values(groupExpenses)
               .map((expense) => (
                 <div className="individual-expense" key={expense.id}>
                   <div className="expense-small-container">
-                  <div className="expense-category"> {getExpenseCategoryIcon(expense.category)}</div>
-                  <div className="expense-info">
-                  <div>
-                    {expense.creator_name} posted a $
-                    {parseFloat(expense.amount).toFixed(2)} expense on{" "}
-                    {convertDate(expense.created_at)}
-                  </div>
-                  <div>Expense description: {expense.description}</div>
-                  </div>
+                    <div className="expense-category">
+                      {" "}
+                      {getExpenseCategoryIcon(expense.category)}
+                    </div>
+                    <div className="expense-info">
+                      <div>
+                        {expense.creator_name} posted a $
+                        {parseFloat(expense.amount).toFixed(2)} expense on{" "}
+                        {convertDate(expense.created_at)}
+                      </div>
+                      <div>Expense description: {expense.description}</div>
+                    </div>
                   </div>
                   {current_user && current_user.id === expense.creator_id && (
                     <div className="edit-expense-button">
