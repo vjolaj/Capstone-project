@@ -1,0 +1,33 @@
+.confirm-payment-button {
+    background-color: #fa5f0c75;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid rgb(212, 212, 212);
+    border-radius: 3px;
+    margin-bottom: 15px;
+    padding: 10px 18px;
+    cursor: pointer;
+    width: 100%;
+    color: white;
+    border-radius: 10px;
+}
+
+.confirm-payment-button:hover {
+    background-color: #fa5f0c95
+}
+
+.select-payment-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+.select-payment {
+    background-color: #fa5f0c2b;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    width: 12em;
+    border: 1px solid #fa5f0c75;
+}
+

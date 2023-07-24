@@ -9,6 +9,7 @@ import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { makeNewSettlementThunk } from "../../store/settlements";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import './ConfirmSettlementModal.css'
 
 function ConfirmSettlementModal({ settlement, group }) {
   const { closeModal } = useModal();
@@ -48,16 +49,15 @@ function ConfirmSettlementModal({ settlement, group }) {
 
   return (
     <div className="mainContainer">
-      <div className="deleteText">
-        <h1 className="h1Delete">Confirm Payment</h1>
-        <p className="pDelete">
+        <h1 className="formHeading">Confirm Payment</h1>
+        <p className="add-member-warning">
           Please confirm your payment of ${parseFloat(settlement.amount).toFixed(2)} to{" "}
           {settlement.payee_username}.
         </p>
-      </div>
-      <label>
-            Please select the method by which you are making the payment.
+      <label className="select-payment-div">
+            <div className="select-text">Select a payment method.</div>
             <select
+              className="select-payment"
               value={method}
               onChange={(e) => setMethod(e.target.value)}
             >
@@ -67,13 +67,13 @@ function ConfirmSettlementModal({ settlement, group }) {
                 </option>
               ))}
             </select>
+          </label>
             {submitted && validationErrors.method && (
               <p className="error">{validationErrors.method}</p>
             )}
-          </label>
 
       <div className="YN">
-        <button className="Ybutton" id="yesDelete" onClick={handleSubmit}>
+        <button className="confirm-payment-button" onClick={handleSubmit}>
           Yes, I have made the payment
         </button>
         <button

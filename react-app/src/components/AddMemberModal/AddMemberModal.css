@@ -1,3 +1,32 @@
 .highlighted {
-    background-color: rgb(173, 213, 182);
+    background-color: #8ea8fec3;
+}
+
+.user {
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+
+.add-member-header {
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center; 
+}
+
+.add-member-warning {
+    font-size: 1.0rem;
+    margin-top: 10px;
+    margin-bottom: 1.5em;
+    display: flex;
+    justify-content: center;
+}
+
+.add-member-input input {
+    width: 100%;
+    position: relative;
+    background-color: #c4ebfc23;
+    border: none;
+    padding: 1em;
+    border-bottom: 1px solid #97CFFE;
+    margin-bottom: 0.8em;
 }

@@ -6,6 +6,7 @@ import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { getGroupSettlementThunk } from "../../store/settlements";
 import { getAllGroupBalancesThunk } from "../../store/settlements";
+import './AddExpenseModal.css'
 
 function AddExpenseModal({ group }) {
   const dispatch = useDispatch();
@@ -13,9 +14,7 @@ function AddExpenseModal({ group }) {
   const sessionUser = useSelector((state) => state.session.user);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  //   const [image, setImage] = useState(null);
   const [expenseCategory, setExpenseCategory] = useState("");
-  //   const [imageLoading, setImageLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const expenseCategories = [
     "",
@@ -45,7 +44,6 @@ function AddExpenseModal({ group }) {
     if (!expenseCategory) {
       errorsObject.expenseCategory = "Expense Category selection is required";
     }
-    //   add validation error for image types
 
     setValidationErrors(errorsObject);
   }, [amount, description, expenseCategory]);
@@ -58,9 +56,6 @@ function AddExpenseModal({ group }) {
       expenseCategory,
       description,
     };
-    // aws uploads can be a bit slow—displaying
-    // some sort of loading message is a good idea
-    // setImageLoading(true);
     if (Object.values(validationErrors).length) {
       return null;
     }
@@ -75,7 +70,7 @@ function AddExpenseModal({ group }) {
   };
 
   return (
-    <>
+    <div className="mainContainer">
       <div className="add-group-form">
         <form onSubmit={handleSubmit}>
           {/* <ul>
@@ -84,8 +79,9 @@ function AddExpenseModal({ group }) {
                   ))}
                 </ul> */}
           <div className="formHeading">Add a new expense</div>
+          <div className="add-member-warning">FYI: This expense will be split equally between all members of this group.</div>
           <div className="individualFormContainer">
-            Enter an amount for your expense
+            Enter an amount for your expense.
             <input
               type="text"
               value={amount}
@@ -100,7 +96,7 @@ function AddExpenseModal({ group }) {
           </div>
 
           <div className="longerFormContainer">
-            Please enter a description for this expense.
+            Enter a description for this expense.
             <input
               type="text"
               value={description}
@@ -113,8 +109,8 @@ function AddExpenseModal({ group }) {
               <p className="error">{validationErrors.description}</p>
             )}
           </div>
-          <label>
-            Select the expense category
+          <label className="select-div">
+            <div className="select-text">Select the expense category</div>
             <select
               value={expenseCategory}
               onChange={(e) => setExpenseCategory(e.target.value)}
@@ -125,33 +121,18 @@ function AddExpenseModal({ group }) {
                 </option>
               ))}
             </select>
+          </label>
             {submitted && validationErrors.expenseCategory && (
               <p className="error">{validationErrors.expenseCategory}</p>
             )}
-          </label>
-          {/* <div className="form-input-box">
-            <div
-              className="imageInputContainer longerFormContainer"
-              htmlFor="image"
-            >
-              Post an image for your group.
-              <input
-                id="image"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImage(e.target.files[0])}
-              ></input>
-              {submitted && validationErrors.image && (
-                <p className="error">{validationErrors.image}</p>
-              )}
-            </div>
-          </div> */}
-          <button type="submit" className="submit-form-button">
+          <div className="submit-div">
+          <button type="submit" className="submit-expense-button">
             Add your Expense
           </button>
+          </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

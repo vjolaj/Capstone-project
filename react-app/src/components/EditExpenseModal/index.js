@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useModal } from "../../context/Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { editExpenseThunk } from "../../store/expenses";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
@@ -11,8 +10,6 @@ import { getGroupSettlementThunk } from "../../store/settlements";
 function EditExpenseModal({ expense, group }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const history = useHistory();
-  const sessionUser = useSelector((state) => state.session.user);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [expenseCategory, setExpenseCategory] = useState("");
@@ -38,7 +35,6 @@ function EditExpenseModal({ expense, group }) {
     if (!expenseCategory) {
       errorsObject.expenseCategory = "Expense Category selection is required";
     }
-    //   add validation error for image types
 
     setValidationErrors(errorsObject);
   }, [amount, description, expenseCategory]);
@@ -71,12 +67,11 @@ function EditExpenseModal({ expense, group }) {
         dispatch(getAllGroupExpensesRoutes(group.id))
         dispatch(getAllGroupBalancesThunk(group.id));
         dispatch(getGroupSettlementThunk(group.id));
-        // history.push(`/groups/${group.id}`)
     })
   };
 
   return (
-    <>
+    <div className="mainContainer">
       <div className="add-group-form">
         <form onSubmit={handleSubmit}>
           {/* <ul>
@@ -84,9 +79,9 @@ function EditExpenseModal({ expense, group }) {
                     <li key={idx}>{error}</li>
                   ))}
                 </ul> */}
-          <div className="formHeading">Add a new expense</div>
+          <div className="formHeading">Edit your expense</div>
           <div className="individualFormContainer">
-            Enter an amount for your expense
+            Enter an amount for your expense.
             <input
               type="text"
               value={amount}
@@ -101,7 +96,7 @@ function EditExpenseModal({ expense, group }) {
           </div>
 
           <div className="longerFormContainer">
-            Please enter a description for this expense.
+            Enter a description for this expense.
             <input
               type="text"
               value={description}
@@ -114,8 +109,8 @@ function EditExpenseModal({ expense, group }) {
               <p className="error">{validationErrors.description}</p>
             )}
           </div>
-          <label>
-            Select the expense category
+          <label className="select-div">
+          <div className="select-text">Select the expense category</div>
             <select
               value={expenseCategory}
               onChange={(e) => setExpenseCategory(e.target.value)}
@@ -126,16 +121,18 @@ function EditExpenseModal({ expense, group }) {
                 </option>
               ))}
             </select>
+          </label>
             {submitted && validationErrors.expenseCategory && (
               <p className="error">{validationErrors.expenseCategory}</p>
             )}
-          </label>
-          <button type="submit" className="submit-form-button">
+          <div className="submit-div">
+          <button type="submit" className="submit-expense-button">
             Edit your Expense
           </button>
+          </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 

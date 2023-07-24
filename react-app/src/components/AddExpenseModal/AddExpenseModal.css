@@ -1,0 +1,46 @@
+.individualFormContainer input {
+    width: 100%;
+    position: relative;
+    background-color: #c4ebfc23;
+    border: none;
+    padding: 1em;
+    border-bottom: 1px solid #97CFFE;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.select-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+.select-div select {
+    background-color: #97d0fe5d;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    width: 12em;
+    border: 1px solid #97CFFE;
+}
+
+.submit-expense-button {
+    background-color: #97CFFE;
+    color: white;
+    padding: 1.2em;
+    border-radius: 1.8em;
+    border-color: none;
+    box-shadow: none;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+    font-weight: 700;
+    border: 1px solid rgb(212, 212, 212);
+    width: 70%;
+}
+
+.submit-expense-button:hover {
+    background-color: #6abbfd;
+}
+.submit-div {
+    display: flex;
+    justify-content: center;
+}

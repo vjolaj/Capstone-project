@@ -25,6 +25,9 @@ function AddMemberModal({ group, users }) {
 
   useEffect(() => {
     const errorsObject = {};
+    if (!userName) {
+      errorsObject.userName = "You must select a user ";
+    }
     if (groupMembers && groupMembers.includes(userName)) {
       errorsObject.userName = "User is already a member in this group";
     }
@@ -53,11 +56,13 @@ function AddMemberModal({ group, users }) {
   );
 
   return (
-    <div>
+    <div className="mainContainer">
       <form onSubmit={handleSubmit}>
-        <h2>Search for a user to add to group</h2>
-        <h4>FYI: you can't add group members once you start recording expenses, and you can't delete group members if there are any unsettled balances in the group.</h4>
+        <div className="add-member-header">Search for a user to add to group</div>
+        <div className="add-member-warning">FYI: you can't add group members once you start recording expenses, and you can't delete group members if there are any unsettled balances in the group.</div>
+        <div className="add-member-input">
         <input
+          className="add-member-input"
           placeholder="Search for a username"
           value={search}
           onChange={handleSearchChange}
@@ -65,7 +70,7 @@ function AddMemberModal({ group, users }) {
         {search.length > 0 &&
           matchingUsers.length > 0 &&
           matchingUsers.map((user) => (
-            <div className={userName === user.username ? "highlighted" : ""} onClick={() => setUserName(user.username)} key={user.id}>
+            <div className={userName === user.username ? "highlighted user" : "user"} onClick={() => setUserName(user.username)} key={user.id}>
               {user.username}
             </div>
           ))}
@@ -75,7 +80,8 @@ function AddMemberModal({ group, users }) {
         {submitted && validationErrors.userName && (
           <p className="error">{validationErrors.userName}</p>
         )}
-        <button type="submit">Add member to group</button>
+        </div>
+        <button className="signUpButton" type="submit">Add member to group</button>
       </form>
     </div>
   );
