@@ -95,11 +95,11 @@ def update_settlement_transactions(group_id):
     settlement_transactions = []
     i = 0
     while any_balance_nonzero(consolidated_balances):
-        print("🥳")
-        print(consolidated_balances)
-        if i == 10:
-            raise Exception("now we stop")
-        i += 1
+        # print("🥳")
+        # print(consolidated_balances)
+        # if i == 10:
+        #     raise Exception("now we stop")
+        # i += 1
         # we want to use the maximum positive and negative balances for the transactions
         max_positive_balance_user = max(consolidated_balances, key = lambda x: consolidated_balances[x])
         max_negative_balance_user = min(consolidated_balances, key = lambda x: consolidated_balances[x])

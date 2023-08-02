@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useModal } from "../../context/Modal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createExpenseThunk } from "../../store/expenses";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
@@ -11,7 +11,6 @@ import './AddExpenseModal.css'
 function AddExpenseModal({ group }) {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const sessionUser = useSelector((state) => state.session.user);
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [expenseCategory, setExpenseCategory] = useState("");
@@ -73,11 +72,6 @@ function AddExpenseModal({ group }) {
     <div className="mainContainer">
       <div className="add-group-form">
         <form onSubmit={handleSubmit}>
-          {/* <ul>
-                  {errors.map((error, idx) => (
-                    <li key={idx}>{error}</li>
-                  ))}
-                </ul> */}
           <div className="formHeading">Add a new expense</div>
           <div className="add-member-warning">FYI: This expense will be split equally between all members of this group.</div>
           <div className="individualFormContainer">

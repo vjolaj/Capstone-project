@@ -54,8 +54,7 @@ def upgrade():
     sa.Column('imageUrl', sa.String(length=255), nullable=False),
     sa.Column('creator_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['creator_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('group_name')
+    sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE groups SET SCHEMA {SCHEMA};")

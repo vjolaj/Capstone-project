@@ -41,7 +41,6 @@ def create_group():
             group_name = form.data['group_name'],
             description = form.data['description'],
             imageUrl = upload['url'],
-            # imageUrl = form.data['imageUrl'],
             creator_id = current_user.id
         )
         

@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
 import splitziesFullPurpleImage from "../../assets/SPLITZIES_FULL_PURPLE.png";
 import splitziesFullBlueImage from '../../assets/Splitzies_Full_Blue.png'
@@ -77,7 +76,6 @@ function Navigation({ isLoaded }) {
         </div>
         {isLoaded && (
           <div>
-            {/* <ProfileButton user={sessionUser} /> */}
             {isLoaded && sessionLinks}
           </div>
         )}

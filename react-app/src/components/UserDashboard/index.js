@@ -1,7 +1,6 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useHistory } from "react-router-dom";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllPaymentsThunk } from "../../store/payments";
 import "./UserDashboard.css";
@@ -12,18 +11,13 @@ const UserDashboard = () => {
   const groups = useSelector((state) => state.groups.allGroups);
   const user_payments = useSelector((state) => state.payments.userPayments);
   const current_user = useSelector((state) => state.session.user);
-  const history = useHistory();
-  const [showMenu, setShowMenu] = useState(false);
-  const ulRef = useRef();
-  const [currentView, setCurrentView] = useState("dashboard");
-  const [selectedGroupId, setSelectedGroupId] = useState(null);
 
   const payments_to_user = Object.values(user_payments).filter(
-    (payment) => payment.payee_id == current_user.id
+    (payment) => payment.payee_id === current_user.id
   );
 
   const payments_by_user = Object.values(user_payments).filter(
-    (payment) => payment.payer_id == current_user.id
+    (payment) => payment.payer_id === current_user.id
   );
 
   const convertDate = (date) => {
@@ -76,14 +70,13 @@ const UserDashboard = () => {
       </div>
       <div>
         <div className="user-dashboard-text">Groups you are a part of:</div>
-        {Object.values(groups) == 0 ?
+        {Object.values(groups) === 0 ?
         <div>No groups, yet!</div> : <ul className="groups-list">
         {Object.values(groups).map((group) => (
           <li className='individual-Group-Img' key={group.id}>
-              <img className="imageOverlay" src={group.imageUrl} alt="Group Image" />
+              <img className="imageOverlay" src={group.imageUrl} alt="Group" />
               <div className="group-info">
               <div>{group.group_name}</div>
-              {/* <div>{group.description}</div> */}
               <div className="group-members">
                 {group.members.map((member) => (
                   <div key={member.id}>

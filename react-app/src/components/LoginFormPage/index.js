@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { login } from "../../store/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useHistory, NavLink } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import "./LoginForm.css";
 import friendsImg from '../../assets/friends_fun.png'
 
@@ -84,7 +84,7 @@ function LoginFormPage() {
       <img
         className="login-img"
         src={friendsImg}
-        alt="Friends Fun Image Illustration"
+        alt="Friends Fun Illustration"
       />
       </div>
     </>

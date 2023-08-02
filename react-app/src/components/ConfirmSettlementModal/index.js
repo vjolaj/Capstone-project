@@ -8,13 +8,11 @@ import {
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { makeNewSettlementThunk } from "../../store/settlements";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import './ConfirmSettlementModal.css'
 
 function ConfirmSettlementModal({ settlement, group }) {
   const { closeModal } = useModal();
   const dispatch = useDispatch();
-  const history = useHistory();
   const [method, setMethod] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);

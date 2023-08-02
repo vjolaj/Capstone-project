@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import "./GroupShow.css";
 import {
-  createGroupThunk,
   getAllGroupsThunk,
   readSingleGroupThunk,
   editGroupThunk,
@@ -15,7 +13,6 @@ import {
   getGroupSettlementThunk,
 } from "../../store/settlements";
 import OpenModalButton from "../OpenModalButton";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import AddMemberModal from "../AddMemberModal";
 import DeleteMemberModal from "../DeleteMemberModal";
 import DeleteGroupModal from "../DeleteGroupModal";
@@ -24,7 +21,6 @@ import EditExpenseModal from "../EditExpenseModal";
 import ConfirmSettlementModal from "../ConfirmSettlementModal";
 
 const GroupShow = ({ groupId, setCurrentView }) => {
-  // const { groupId } = useParams();
   const dispatch = useDispatch();
   const current_user = useSelector((state) => state.session.user);
   const [editMode, setEditMode] = useState(false);
@@ -33,7 +29,6 @@ const GroupShow = ({ groupId, setCurrentView }) => {
   const groupBalances = useSelector((state) => state.settlements.balances);
   const groupSettlement = useSelector((state) => state.settlements.settlements);
   const [description, setDescription] = useState("");
-  const history = useHistory();
   const [submitted, setSubmitted] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -65,7 +60,6 @@ const GroupShow = ({ groupId, setCurrentView }) => {
   }, [dispatch, groupId]);
 
   const users = useSelector((state) => state.users.users);
-  // console.log(users)
   useEffect(() => {
     dispatch(getAllUsersThunk());
   }, [dispatch]);
@@ -103,18 +97,16 @@ const GroupShow = ({ groupId, setCurrentView }) => {
 
   if (!group) return null;
   if (!groupExpenses) return null;
-  // if (!current_user) return null;
 
   return (
     <div>
       <div>
-        {/* <h3>Group:</h3> */}
         <div>
           <img className="groupImage" src={group.imageUrl} alt="img" />
           <div className="group-info-container">
             <div className="name-container">
               <div className="group-name">{group.group_name}</div>
-              {current_user.id == group.creator_id &&
+              {current_user.id === group.creator_id &&
                 Object.values(groupBalances).every(
                   (balance) => balance <= 0.01
                 ) && (
@@ -167,20 +159,19 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                   )}
                 </>
               )}
-              {current_user && current_user.id != group.creator_id && (
+              {current_user && current_user.id !== group.creator_id && (
                 <div>Description: {group.description}</div>
               )}
             </div>
             <div className="members-container">
               <div className="members">
-                {/* <div>Members</div> */}
                 {group.members.map((member) => (
                   <div className="edit-member" key={member.id}>
                     <div className="member">
                       {member}
                       {current_user &&
                         current_user.id === group.creator_id &&
-                        current_user.username != member &&
+                        current_user.username !== member &&
                         Object.values(groupExpenses).length === 0 && (
                           <div className="remove-member">
                             <OpenModalButton
@@ -216,16 +207,15 @@ const GroupShow = ({ groupId, setCurrentView }) => {
             <div className="balances-text">Group Balances</div>
             <div className="balances">
               {Object.entries(groupBalances).map(([key, value]) => (
-                <div className={value >= 0 ? "is-owed" : "owes"} key={key}>
+                <div className={value >= 0 ? "is-owed" : "owes"} >
                   {key}
                   {value > 0
-                    ? ` is owed $${parseFloat(value).toFixed(2)}`
-                    : ` owes $${parseFloat(Math.abs(value)).toFixed(2)}`}
+                    ? ` is owed $${parseFloat(value).toFixed(2) === 0.01 ? 0.00 : parseFloat(value).toFixed(2)}`
+                    : ` owes $${parseFloat(Math.abs(value)).toFixed(2) === 0.01 ? 0.00 : parseFloat(Math.abs(value)).toFixed(2)}`}
                 </div>
               ))}
               {Math.abs(groupBalances[current_user.username]) <= 0.01 ? (
                 <div className="settled-message">
-                  {" "}
                   <i class="fa-regular fa-square-check"></i>You are settled up
                   in this group - yay!
                 </div>
@@ -289,7 +279,6 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                 <div className="individual-expense" key={expense.id}>
                   <div className="expense-small-container">
                     <div className="expense-category">
-                      {" "}
                       {getExpenseCategoryIcon(expense.category)}
                     </div>
                     <div className="expense-info">

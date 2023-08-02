@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useModal } from "../../context/Modal";
 import { deleteGroupThunk, getAllGroupsThunk } from "../../store/groups";
 import { useDispatch } from "react-redux";

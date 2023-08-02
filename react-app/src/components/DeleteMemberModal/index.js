@@ -2,7 +2,6 @@ import React from "react";
 import { useModal } from "../../context/Modal";
 import { deleteGroupMemberThunk, getAllGroupsThunk } from "../../store/groups";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { getAllGroupBalancesThunk } from "../../store/settlements";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { getGroupSettlementThunk } from "../../store/settlements";
@@ -10,9 +9,7 @@ import './DeleteMemberModal.css'
 
 function DeleteMemberModal({ group, member }) {
     const { closeModal } = useModal();
-    const dispatch = useDispatch();
-    const history = useHistory();
-  
+    const dispatch = useDispatch();  
   
     const handleSubmit = async (e) => {
       e.preventDefault();

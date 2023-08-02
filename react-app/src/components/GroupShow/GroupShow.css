@@ -11,19 +11,19 @@
 }
 
 .edit-description-button {
-    background-color: #97d0fe;
+    background-color: #239cffc5;
     color: white;
     padding: 0.5em;
     border-radius: 1.8em;
     border-color: none;
     box-shadow: none;
     font-weight: 700;
-    border: 1px solid rgb(212, 212, 212);
+    border: none;
     width: 12.5em;
 }
 
 .edit-description-button:hover {
-    background-color: #87c8fe
+    background-color: #239cff
 }
 
 .edit-description-container input{
@@ -80,12 +80,13 @@
 }
 
 .member {
-    background-color: #8ea8fec3;
     border-radius:20px;
     display: flex;
     gap: 0.5em;
     padding: 0.4em;
-    border: 1px solid rgb(212, 212, 212);
+    border: 1px solid #0c91fe;
+    color: #0c91fe;
+    font-size: 0.9rem;
 }
 
 .edit-group-buttons {
@@ -102,33 +103,33 @@
 }
 
 .delete-group-button button {
-    background-color: #97d0fe;
+    background-color: #239cffc5;
     color: white;
     padding: 0.5em;
     border-radius: 1.8em;
     border-color: none;
     box-shadow: none;
     font-weight: 700;
-    border: 1px solid rgb(212, 212, 212);
+    border: none;
     width: 12.5em;
 }
 .delete-group-button button:hover {
-    background-color: #87c8fe
+    background-color: #239cff
 } 
 
 .add-member button {
-    background-color: #8ea8fec3;
+    background-color: #239cffc5;
     color: white;
     padding: 0.5em;
     border-radius: 1.8em;
     border-color: none;
     box-shadow: none;
     font-weight: 700;
-    border: 1px solid rgb(212, 212, 212);
+    border: none;
     width: 12.5em;
 }
 .add-member button:hover {
-    background-color: #8EA9FE
+    background-color: #239cff
 } 
 
 .balances-text {
@@ -195,18 +196,18 @@
 }
 
 .confirm-settlement-button button {
-    background-color: #fa5f0c75;
+    background-color: #fa5f0ccb;
     color: white;
     padding: 0.5em;
     border-radius: 1.8em;
     border-color: none;
     box-shadow: none;
     font-weight: 700;
-    border: 1px solid rgb(212, 212, 212);
+    border: none;
     width: 12.5em;
 }
 .confirm-settlement-button button:hover {
-    background-color: #fa5f0c95
+    background-color: #fa5f0c
 } 
 
 .individual-expense {
@@ -221,19 +222,19 @@
 }
 
 .edit-expense-button button {
-    background-color: #fa5f0c75;
+    background-color: #fa5f0ccb;
     color: white;
     padding: 0.5em;
     border-radius: 1.8em;
     border-color: none;
     box-shadow: none;
     font-weight: 700;
-    border: 1px solid rgb(212, 212, 212);
+    border: none;
     width: 12.5em;
 }
 
 .edit-expense-button button:hover {
-    background-color: #fa5f0c95
+    background-color: #fa5f0c
 }
 
 .expenses-text {
@@ -260,17 +261,18 @@
 }
 
 .add-expense-button button {
-    background-color: #97d0fe;
+    background-color: #239cffc5;
     color: white;
     padding: 0.5em;
     border-radius: 1.8em;
     border-color: none;
     box-shadow: none;
     font-weight: 700;
-    border: 1px solid rgb(212, 212, 212);
+    /* border: 1px solid rgb(212, 212, 212); */
+    border: none;
     width: 12.5em;
 }
 
 .add-expense-button button:hover {
-    background-color: #87c8fe
+    background-color: #239cff
 }

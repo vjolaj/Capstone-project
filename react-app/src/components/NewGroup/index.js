@@ -6,7 +6,6 @@ import { createGroupThunk } from "../../store/groups";
 import { getAllGroupsThunk } from "../../store/groups";
 
 export default function NewGroup({ setCurrentView }) {
-    const sessionUser = useSelector((state) => state.session.user);
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState(null);
@@ -15,16 +14,8 @@ export default function NewGroup({ setCurrentView }) {
     const dispatch = useDispatch();
     const history = useHistory();
     const [submitted, setSubmitted] = useState(false)
-
-  //   const users = useSelector(
-  //     (state) => state.users.users
-  //   )
-  // // console.log(users)
-  //   useEffect(() => {
-  //       dispatch(getAllUsersThunk());
-  //     }, [dispatch]);
-  
-  
+    const groups = useSelector((state) => state.groups.allGroups);
+    
     useEffect(() => {
       const errorsObject = {};
       if (!name) {
@@ -41,9 +32,7 @@ export default function NewGroup({ setCurrentView }) {
       }
       if (!image) {
           errorsObject.image = "Image upload is required"
-      }
-    //   add validation error for image types
-  
+      }  
       setValidationErrors(errorsObject)
   }, [name, description, image])
   
@@ -62,7 +51,7 @@ export default function NewGroup({ setCurrentView }) {
         return null
     }
     setValidationErrors({})
-      const newGroup = await dispatch(createGroupThunk(formData))
+      await dispatch(createGroupThunk(formData))
       dispatch(getAllGroupsThunk());
       history.push(`/dashboard`);
       setCurrentView('dashboard');
@@ -72,11 +61,6 @@ export default function NewGroup({ setCurrentView }) {
       <>
         <div className="add-group-form">
           <form onSubmit={handleSubmit}>
-            {/* <ul>
-                {errors.map((error, idx) => (
-                  <li key={idx}>{error}</li>
-                ))}
-              </ul> */}
             <div className="formHeading">Add a new group</div>
             <div className="warning">FYI: you cannot delete a group if there are unsettled balances in the group.</div>
             <div className="longerFormContainer">

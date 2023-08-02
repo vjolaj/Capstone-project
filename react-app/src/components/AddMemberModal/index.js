@@ -5,7 +5,6 @@ import { getAllGroupBalancesThunk } from "../../store/settlements";
 import { getAllGroupExpensesRoutes } from "../../store/expenses";
 import { getGroupSettlementThunk } from "../../store/settlements";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import './AddMemberModal.css'
 
 function AddMemberModal({ group, users }) {
@@ -15,7 +14,6 @@ function AddMemberModal({ group, users }) {
   const [validationErrors, setValidationErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
   const groupMembers = group.members;
 
   const handleSearchChange = (e) => {
@@ -47,7 +45,6 @@ function AddMemberModal({ group, users }) {
       dispatch(getAllGroupExpensesRoutes(group.id));
       dispatch(getAllGroupBalancesThunk(group.id));
       dispatch(getGroupSettlementThunk(group.id));
-      // history.push(`/groups/${group.id}`);
     });
   };
 

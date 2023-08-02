@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getAllGroupsThunk } from "../../store/groups";
 import { getAllPaymentsThunk } from "../../store/payments";
 import { logout } from "../../store/session";
@@ -15,22 +15,11 @@ import UserDashboard from "../UserDashboard";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.groups.allGroups);
-  const user_payments = useSelector((state) => state.payments.userPayments);
-  const current_user = useSelector((state) => state.session.user);
   const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedGroupId, setSelectedGroupId] = useState(null);
-
-
-  const payments_to_user = Object.values(user_payments).filter(
-    (payment) => payment.payee_id == current_user.id
-  );
-
-  const payments_by_user = Object.values(user_payments).filter(
-    (payment) => payment.payer_id == current_user.id
-  );
 
   const handleNavigationClick = (view) => {
     setCurrentView(view);
@@ -39,7 +28,7 @@ const Dashboard = () => {
   const handleGroupSelection = (groupId) => {
     setSelectedGroupId(groupId);
   };
-  console.log(selectedGroupId)
+
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -53,19 +42,6 @@ const Dashboard = () => {
     setShowMenu(true);
   };
 
-  // useEffect(() => {
-  //   if (!showMenu) return;
-
-  //   const closeMenu = (e) => {
-  //     if (!ulRef.current.contains(e.target)) {
-  //       setShowMenu(false);
-  //     }
-  //   };
-
-  //   ulRef.current.addEventListener('click', closeMenu);
-
-  //   return () => ulRef.current.removeEventListener("click", closeMenu);
-  // }, [showMenu]);
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
