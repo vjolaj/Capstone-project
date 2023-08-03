@@ -13,7 +13,7 @@ Splitzies is a website that helps users manage shared expenses within groups. Sp
 * Creating, Reading, Updating expenses (which are split equally within members of the group)
 * Creating and Reading settled payments
 
-Future functionality include:
+Future functionality includes:
 * Comments: users will be able to post comments associated with individual expenses
 * Budget: users will be able to set budgets for any of the expense categories, and the app will keep track of whether or not the user has gone over their budget
 
