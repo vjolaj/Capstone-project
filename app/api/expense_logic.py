@@ -7,6 +7,10 @@ from app.models.settlement_transaction import SettlementTransaction
 from app.models import db
 from app.models.user import User
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 ######## HELPERS #########
 
 def get_amounts_expended_per_member(group_id):
@@ -36,6 +40,8 @@ def get_settled_amount_for_member(group_id, user_id, is_payer):
     """
     For a given member in a group, gets how much they paid/received in settlements
     """
+    logger.info(f"Getting settlement amounts for members in group {group_id}")
+
     if is_payer:
         settlements = Payment.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).all()
         # settlements = SettlementTransaction.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).filter_by(is_settled=True).all()
@@ -88,7 +94,9 @@ def update_settlement_transactions(group_id):
     {'user_1': {'user_2': 10, 'user_3':30}, 'user_2': {'user_4':5}}
     
     """
+    logger.info(f"Updating settlement transactions for group {group_id}")
     consolidated_balances = get_consolidated_balances(group_id)
+    
     existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).all()
     
     # settlements_dict = defaultdict(dict)
