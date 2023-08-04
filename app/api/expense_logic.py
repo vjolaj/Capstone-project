@@ -127,7 +127,7 @@ def update_settlement_transactions(group_id):
         settlement_transactions.append(SettlementTransaction(payer_id=max_negative_balance_user, payee_id=max_positive_balance_user, group_id=group_id, amount=amount_for_settlement, is_settled=False))
     logger.debug(f"Found {len(settlement_transactions)} transactions to for group {group_id} settlement")
     try:
-        SettlementTransaction.query.filter_by(group_id=group_id).delete()
+        SettlementTransaction.query.filter_by(group_id=group_id).filter_by(is_settled=False).delete()
         # SettlementTransaction.add_all(settlement_transactions)
         db.session.add_all(settlement_transactions)
         db.session.commit()
