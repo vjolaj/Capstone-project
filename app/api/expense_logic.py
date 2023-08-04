@@ -40,7 +40,7 @@ def get_settled_amount_for_member(group_id, user_id, is_payer):
     """
     For a given member in a group, gets how much they paid/received in settlements
     """
-    logger.info(f"Getting settlement amounts for members in group {group_id}")
+    logger.debug(f"Getting settlement amounts for members in group {group_id}")
 
     if is_payer:
         settlements = Payment.query.filter_by(group_id=group_id).filter_by(payer_id=user_id).all()
@@ -94,8 +94,9 @@ def update_settlement_transactions(group_id):
     {'user_1': {'user_2': 10, 'user_3':30}, 'user_2': {'user_4':5}}
     
     """
-    logger.info(f"Updating settlement transactions for group {group_id}")
+    logger.debug(f"Updating settlement transactions for group {group_id}")
     consolidated_balances = get_consolidated_balances(group_id)
+    logger.debug(f"Consolidated balances: {consolidated_balances}")
     
     existing_settlement_transactions = SettlementTransaction.query.filter_by(group_id=group_id).all()
     
@@ -103,6 +104,7 @@ def update_settlement_transactions(group_id):
     settlement_transactions = []
     i = 0
     while any_balance_nonzero(consolidated_balances):
+        logger.debug(f"Finding best settlements for group {group_id}")
         # print("🥳")
         # print(consolidated_balances)
         # if i == 10:
@@ -123,16 +125,17 @@ def update_settlement_transactions(group_id):
         
         # settlement_transactions.append(SettlementTransaction(payer_id=max_negative_balance_user, payee_id=max_positive_balance_user, group_id=group_id, amount=amount_for_settlement))
         settlement_transactions.append(SettlementTransaction(payer_id=max_negative_balance_user, payee_id=max_positive_balance_user, group_id=group_id, amount=amount_for_settlement, is_settled=False))
+    logger.debug(f"Found {len(settlement_transactions)} transactions to for group {group_id} settlement")
     try:
         SettlementTransaction.query.filter_by(group_id=group_id).delete()
         # SettlementTransaction.add_all(settlement_transactions)
         db.session.add_all(settlement_transactions)
         db.session.commit()
-    except:
+    except Exception as e:
         SettlementTransaction.query.filter_by(group_id=group_id).delete()
         db.session.add_all(existing_settlement_transactions)
         db.session.commit()
-        raise Exception("Issue with updating SettlementTransaction, changes not applied")
+        raise Exception(f"Issue with updating SettlementTransaction, changes not applied: {e}")
         
     # return settlements_dict
             
