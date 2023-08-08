@@ -118,7 +118,7 @@ def upgrade():
     sa.Column('payer_id', sa.Integer(), nullable=False),
     sa.Column('payee_id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
-    sa.Column('amount', sa.Numeric(precision=4, scale=2), nullable=False),
+    sa.Column('amount', sa.Numeric(), nullable=False),
     sa.Column('method', sa.String(), nullable=False),
     sa.Column('paid_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),

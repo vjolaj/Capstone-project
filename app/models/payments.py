@@ -12,7 +12,7 @@ class Payment(db.Model):
     payer_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     payee_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("groups.id")), nullable=False)
-    amount = db.Column(db.Numeric(4, 2), nullable=False)
+    amount = db.Column(db.Numeric, nullable=False)
     method= db.Column(db.String, nullable=False)
     paid_at = db.Column(db.DateTime, default=datetime.now())
     
