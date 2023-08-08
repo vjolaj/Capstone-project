@@ -1,8 +1,8 @@
 .confirm-payment-button {
-    background-color: #fa5f0c75;
+    background-color: #fa5f0ccb;
     width: 100%;
     margin-bottom: 10px;
-    border: 1px solid rgb(212, 212, 212);
+    /* border: 1px solid rgb(212, 212, 212); */
     border-radius: 3px;
     margin-bottom: 15px;
     padding: 10px 18px;
@@ -10,10 +10,11 @@
     width: 100%;
     color: white;
     border-radius: 10px;
+    border: none;
 }
 
 .confirm-payment-button:hover {
-    background-color: #fa5f0c95
+    background-color: #fa5f0c
 }
 
 .select-payment-div {

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 204e6692aaf9
+Revision ID: 30424b29b8ee
 Revises: 
-Create Date: 2023-07-19 08:45:27.891067
+Create Date: 2023-08-08 11:46:44.970152
 
 """
 from alembic import op
@@ -13,7 +13,7 @@ environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
-revision = '204e6692aaf9'
+revision = '30424b29b8ee'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -58,7 +58,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE groups SET SCHEMA {SCHEMA};")
-        
+
     op.create_table('expenses',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('amount', sa.Numeric(), nullable=False),
@@ -73,7 +73,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE expenses SET SCHEMA {SCHEMA};")
-
+        
     op.create_table('group_members',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
@@ -84,7 +84,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE group_members SET SCHEMA {SCHEMA};")
-
+        
     op.create_table('settlement_transactions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('payer_id', sa.Integer(), nullable=False),
@@ -118,7 +118,7 @@ def upgrade():
     sa.Column('payer_id', sa.Integer(), nullable=False),
     sa.Column('payee_id', sa.Integer(), nullable=False),
     sa.Column('group_id', sa.Integer(), nullable=False),
-    sa.Column('amount', sa.Numeric(), nullable=False),
+    sa.Column('amount', sa.Numeric(precision=4, scale=2), nullable=False),
     sa.Column('method', sa.String(), nullable=False),
     sa.Column('paid_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['group_id'], ['groups.id'], ),

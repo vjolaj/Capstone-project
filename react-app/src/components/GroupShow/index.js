@@ -102,8 +102,8 @@ const GroupShow = ({ groupId, setCurrentView }) => {
     <div>
       <div>
         <div>
-          <img className="groupImage" src={group.imageUrl} alt="img" />
           <div className="group-info-container">
+          <img className="groupImage" src={group.imageUrl} alt="img" />
             <div className="name-container">
               <div className="group-name">{group.group_name}</div>
               {current_user.id === group.creator_id &&
@@ -210,8 +210,8 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                 <div className={value >= 0 ? "is-owed" : "owes"} >
                   {key}
                   {value > 0
-                    ? ` is owed $${parseFloat(value).toFixed(2) === 0.01 ? 0.00 : parseFloat(value).toFixed(2)}`
-                    : ` owes $${parseFloat(Math.abs(value)).toFixed(2) === 0.01 ? 0.00 : parseFloat(Math.abs(value)).toFixed(2)}`}
+                    ? ` is owed $${parseFloat(value).toFixed(2) <= 0.01 ? 0.00 : parseFloat(value).toFixed(2)}`
+                    : ` owes $${parseFloat(Math.abs(value)).toFixed(2) <= 0.01 ? 0.00 : parseFloat(Math.abs(value)).toFixed(2)}`}
                 </div>
               ))}
               {Math.abs(groupBalances[current_user.username]) <= 0.01 ? (
@@ -230,7 +230,7 @@ const GroupShow = ({ groupId, setCurrentView }) => {
                       You must wait for payments from members
                     </div>
                   ) : (
-                    <div>
+                    <div className="confirm-settlement-div">
                       {Object.values(groupSettlement).map((settlement) => (
                         <div className="settlement-div" key={settlement.id}>
                           <div className="you-owe-message">

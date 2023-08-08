@@ -17,14 +17,21 @@ def seed_groups():
         imageUrl='https://media.istockphoto.com/id/486644087/photo/apartment-building.jpg?s=612x612&w=0&k=20&c=jFP_iJEQYphmb4BWP6KfFUNBdZaGUOe1N5xOo3icFQw=',
         creator_id=1
     )
+    group3 = Group (
+        group_name='Beach Day', 
+        description='Seagull Beach day trip, August 8th!', 
+        imageUrl='https://cdn.discordapp.com/attachments/1116216556800716822/1138510454713483355/111-BEACH-TRIP.jpeg',
+        creator_id=1
+    )
 
     db.session.add(group1)
     db.session.add(group2)
+    db.session.add(group3)
 
     
     db.session.commit()
 
-    return [group1, group2]
+    return [group1, group2, group3]
 
 # Uses a raw SQL query to TRUNCATE or DELETE the users table. SQLAlchemy doesn't
 # have a built in function to do this. With postgres in production TRUNCATE

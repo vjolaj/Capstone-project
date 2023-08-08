@@ -1,8 +1,9 @@
 .groupImage {
-    width: 70vh;
+    /* width: 70vh; */
     height: 150px;
     object-fit: cover;
     margin-top: 1em;
+    border-radius: 1em;
 }
 
 .group-info-container {
@@ -161,6 +162,7 @@
 .settled-message {
     font-size: 1rem;
     margin: auto;
+    margin-bottom: 0.5em;
 }
 
 .fa-square-check {
@@ -184,10 +186,11 @@
 
 .settlement-div {
     display: flex;
-    /* flex-direction: column; */
+    align-content: center;
     gap: 1em;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 0.5em;
 }
 
 .wait-payment-message {
@@ -205,10 +208,12 @@
     font-weight: 700;
     border: none;
     width: 12.5em;
+    /* margin-bottom: 1em; */
 }
 .confirm-settlement-button button:hover {
     background-color: #fa5f0c
 } 
+
 
 .individual-expense {
     display: flex;

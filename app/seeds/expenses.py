@@ -17,7 +17,7 @@ def seed_expenses():
     expense6 = Expense(
         amount=30, creator_id=3, group_id=1, description='Coffee and Croissants', category='Food')
     expense7 = Expense(
-        amount=320, creator_id=2, group_id=1, description='Cabaret Show', category='Entertainment')
+        amount=320, creator_id=2, group_id=1, description='Concert in Saint-Julien-le-Pauvre', category='Entertainment')
     expense8 = Expense(
         amount=24, creator_id=1, group_id=1, description='Crepes', category='Food')
     expense9 = Expense(
@@ -28,6 +28,10 @@ def seed_expenses():
         amount=135, creator_id=6, group_id=2, description='Gas and Electric', category='Utilities')
     expense12 = Expense(
         amount=60, creator_id=7, group_id=2, description='Movie Theater Tickets', category='Entertainment')
+    expense13 = Expense(
+        amount=60, creator_id=1, group_id=3, description='Gas', category='Transportation')
+    expense14 = Expense(
+        amount=24, creator_id=9, group_id=3, description='Bagels and Coffee', category='Food')
 
 
     db.session.add(expense1)
@@ -42,6 +46,8 @@ def seed_expenses():
     db.session.add(expense10)
     db.session.add(expense11)
     db.session.add(expense12)
+    db.session.add(expense13)
+    db.session.add(expense14)
     
     db.session.commit()
     # return [demo, amelia, caleb, ava, charlotte, sophia, mitchell, liam, evelyn, henry]

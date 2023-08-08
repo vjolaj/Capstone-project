@@ -25,7 +25,7 @@ function Navigation({ isLoaded }) {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
-    history.push("/");
+    history.push("/login");
   };
 
   let sessionLinks;

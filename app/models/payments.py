@@ -1,4 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
+from datetime import datetime
 
 class Payment(db.Model):
     __tablename__ = 'payments'
@@ -13,7 +14,7 @@ class Payment(db.Model):
     group_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("groups.id")), nullable=False)
     amount = db.Column(db.Numeric(4, 2), nullable=False)
     method= db.Column(db.String, nullable=False)
-    paid_at = db.Column(db.DateTime)
+    paid_at = db.Column(db.DateTime, default=datetime.now())
     
     payment_payer = db.relationship('User', back_populates='settled_payments_sent', foreign_keys=[payer_id])
     payment_payee = db.relationship('User', back_populates='settled_payments_received', foreign_keys=[payee_id])

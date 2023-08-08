@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGroupsThunk } from "../../store/groups";
@@ -6,11 +6,14 @@ import { getAllPaymentsThunk } from "../../store/payments";
 import "./UserDashboard.css";
 
 
-const UserDashboard = () => {
+const UserDashboard = ({ onGroupSelection }) => {
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.groups.allGroups);
   const user_payments = useSelector((state) => state.payments.userPayments);
   const current_user = useSelector((state) => state.session.user);
+
+
+
 
   const payments_to_user = Object.values(user_payments).filter(
     (payment) => payment.payee_id === current_user.id
@@ -75,7 +78,7 @@ const UserDashboard = () => {
         {Object.values(groups).map((group) => (
           <li className='individual-Group-Img' key={group.id}>
               <img className="imageOverlay" src={group.imageUrl} alt="Group" />
-              <div className="group-info">
+              <div onClick={() => onGroupSelection(group.id)} className="group-info">
               <div>{group.group_name}</div>
               <div className="group-members">
                 {group.members.map((member) => (

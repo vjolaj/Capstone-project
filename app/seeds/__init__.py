@@ -4,6 +4,7 @@ from .groups import seed_groups, undo_groups
 from .groupmembers import seed_groupmembers, undo_groupmembers
 from .expenses import seed_expenses, undo_expenses
 from .settlementtransactions import seed_settlementtransactions, undo_settlementtransactions
+from .payments import seed_payments, undo_payments
 
 from app.models.db import db, environment, SCHEMA
 
@@ -20,6 +21,7 @@ def seed():
         # command, which will  truncate all tables prefixed with 
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
+        undo_payments()
         undo_settlementtransactions()
         undo_expenses()
         undo_groupmembers()
@@ -30,6 +32,7 @@ def seed():
     seed_groupmembers(users, groups)
     seed_expenses()
     seed_settlementtransactions()
+    seed_payments()
     
     # Add other seed functions here
 
@@ -37,6 +40,7 @@ def seed():
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
+    undo_payments()
     undo_settlementtransactions()
     undo_expenses()
     undo_groupmembers()

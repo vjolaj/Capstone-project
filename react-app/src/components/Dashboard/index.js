@@ -27,13 +27,14 @@ const Dashboard = () => {
 
   const handleGroupSelection = (groupId) => {
     setSelectedGroupId(groupId);
+    setCurrentView("groupShow")
   };
 
 
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
-    history.push("/");
+    history.push("/login");
   };
 
 
@@ -103,7 +104,7 @@ const Dashboard = () => {
       {currentView === 'groupShow' && selectedGroupId && (
           <GroupShow groupId={selectedGroupId} setCurrentView={setCurrentView}/>
         )}
-      {currentView === 'dashboard' && <UserDashboard />}
+      {currentView === 'dashboard' && <UserDashboard onGroupSelection={handleGroupSelection}/>}
       </div>
     </div>
   );

@@ -70,6 +70,7 @@
     text-align: center;
     background: linear-gradient(180deg, #00000088 30%, #ffffff44 100%);
     gap: 8px;
+    cursor: pointer;
   }
 
   /* .group-info div {
